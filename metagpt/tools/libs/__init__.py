@@ -11,7 +11,8 @@ from metagpt.tools.libs import (
     gpt_v_generator,
     web_scraping,
     email_login,
-    shell_tool
+    shell_tool,
+    file_management_toolkit
 )
 
 _ = (
@@ -21,5 +22,6 @@ _ = (
     gpt_v_generator,
     web_scraping,
     email_login,
-    shell_tool
+    shell_tool,
+    file_management_toolkit
 )  # Avoid pre-commit error
