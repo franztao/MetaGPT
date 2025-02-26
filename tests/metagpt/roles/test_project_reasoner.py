@@ -29,7 +29,7 @@ prompt = """
 """
 
 # import jionlp as jio
-goal = r'在FlagPerf AI硬件评测引擎下，如何对wudao数据集和lama3-8B模型在1机8卡上适配沐曦C500的GPU显卡。'
+goal = r'在FlagPerf AI硬件评测引擎下，如何对wudao数据集和lama3-8B模型在1机8卡上适配Nvidia A100的GPU显卡。当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf"'
 memory_short = ''
 memory_long = ''
 output_demand = '''输出结论包括：

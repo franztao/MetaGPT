@@ -1,8 +1,19 @@
 # Full Example: https://github.com/geekan/MetaGPT/blob/main/config/config2.example.yaml
 # Reflected Code: https://github.com/geekan/MetaGPT/blob/main/metagpt/config2.py
 # Config Docs: https://docs.deepwisdom.ai/main/en/guide/get_started/configuration.html
+#llm:
+#  api_type: "openai"  # or azure / ollama / groq etc.
+#  model: "Qwen2.5-Coder-32B-Instruct"  # or gpt-3.5-turbo
+#  base_url: "http://10.0.180.12:8800/v1"  # or forward url / other llm url
+#  api_key: "123"
+#llm:
+#  api_type: "openai"  # or azure / ollama / groq etc.
+#  model: "deepseek-chat"  # or gpt-3.5-turbo
+#  base_url: "https://api.deepseek.com"  # or forward url / other llm url
+#  api_key: "sk-2dcfb5f8f3f24c04ad1bc13843c7e491"
 llm:
   api_type: "openai"  # or azure / ollama / groq etc.
-  model: "Qwen2.5-Coder-32B-Instruct"  # or gpt-3.5-turbo
-  base_url: "http://10.0.180.12:8800/v1"  # or forward url / other llm url
-  api_key: "123"
+  model: "DeepSeek-R1"  # or gpt-3.5-turbo DeepSeek-V3 R1
+  base_url: "https://ai.gitee.com/v1"  # or forward url / other llm url
+  api_key: "VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6"
+

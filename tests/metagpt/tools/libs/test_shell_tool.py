@@ -9,6 +9,9 @@ async def main(requirement: str):
     role = DataInterpreter(tools=["file_management_toolkit"]) # 集成工具
     await role.run(requirement)
 
-def test_shell_tool(mocker):
+def test_shell_tool(mocker:None):
     requirement = r"请查看系统状态"
     asyncio.run(main(requirement))
+
+if __name__ == '__main__':
+    test_shell_tool()
