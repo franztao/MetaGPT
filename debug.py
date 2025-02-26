@@ -83,7 +83,7 @@ C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\docs\base\base-case-doc.md
 
 client = OpenAI(
 	base_url="https://ai.gitee.com/v1",
-	api_key="VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6",
+
 	# default_headers={"X-Package":"1910"},
 )
 
