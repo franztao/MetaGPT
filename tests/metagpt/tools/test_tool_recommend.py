@@ -79,6 +79,7 @@ async def test_bm25_recommend_tools(mock_bm25_tr):
 @pytest.mark.asyncio
 async def test_get_recommended_tool_info(mock_plan, mock_bm25_tr):
     result = await mock_bm25_tr.get_recommended_tool_info(plan=mock_plan)
+    print(result)
     assert isinstance(result, str)
 
 

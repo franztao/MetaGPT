@@ -1,0 +1,158 @@
+### FlagPerf适配WuDao数据集和LLaMA3-8B模型的规划方案
+
+#### 一、硬件环境配置要求
+1. **服务器规格**：
+   - 机型：NVIDIA DGX A100/A800/H100等支持8卡互联的服务器
+   - 单机配置：8x NVIDIA A100-80G/A800-80G GPU（推荐显存≥80GB）
+   - CPU：AMD EPYC 7xx3或Intel Xeon Platinum系列（64核心以上）
+   - 内存：≥1TB DDR4
+   - 存储：≥10TB NVMe SSD（推荐RAID0配置）
+
+2. **系统配置验证**：
+```bash
+# 查看GPU信息
+nvidia-smi -L
+# 验证CUDA版本
+nvcc --version
+# 检查内存容量
+free -h
+# 确认PCIe带宽
+lspci | grep NVIDIA
+# 验证NVLINK状态
+nvidia-smi nvlink --status
+```
+
+#### 二、软件环境配置
+1. **基础软件栈**：
+   - CUDA 11.8 + cuDNN 8.6
+   - NCCL 2.16.2（需支持P2P通信）
+   - PyTorch 2.0.1+（需编译CUDA 11.8支持）
+   - Transformers 4.30+（支持LLaMA3架构）
+
+2. **容器环境构建**：
+```dockerfile
+# Dockerfile示例（vendors/nvidia/pytorch_2.0/Dockerfile）
+FROM nvcr.io/nvidia/pytorch:23.10-py3
+RUN apt-get update && apt-get install -y \
+    openssh-server pdsh \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安装定制化组件
+RUN pip install \
+    torch==2.0.1+cu118 \
+    transformers==4.34.0 \
+    deepspeed==0.12.3 \
+    --extra-index-url https://download.pytorch.org/whl/cu118
+```
+
+#### 三、数据与模型准备
+1. **WuDao数据集处理**：
+```bash
+# 数据预处理示例
+python prepare_wudao.py \
+  --input_dir /path/to/raw_data \
+  --output_dir /dataset/wudao_processed \
+  --tokenizer_path /models/llama3-8B-tokenizer \
+  --seq_length 4096 \
+  --num_workers 32
+```
+
+2. **LLaMA3-8B模型配置**：
+```yaml
+# benchmarks/llama3-8B/pytorch/case_config.yaml
+model_params:
+  hidden_size: 8192
+  num_attention_heads: 32
+  num_hidden_layers: 48
+  max_sequence_length: 8192
+training_params:
+  micro_batch_size: 4
+  gradient_accumulation_steps: 8
+  fp16: true
+  tensor_parallel_degree: 8
+```
+
+#### 四、适配实施步骤
+1. **工程结构适配**：
+```
+FlagPerf/
+├── benchmarks/
+│   └── llama3-8B/
+│       ├── pytorch/
+│       │   ├── model.py       # 模型架构实现
+│       │   ├── dataloader.py  # WuDao数据集加载
+│       │   └── run_pretrain.py# 训练入口
+├── vendors/
+│   └── nvidia/
+│       ├── pytorch_2.0/
+│       │   └── Dockerfile     # 定制容器镜像
+│       └── nvidia_monitor.py  # 8卡监控增强
+```
+
+2. **分布式训练配置**：
+```bash
+# 启动脚本示例（8卡全量预训练）
+deepspeed --num_nodes 1 --num_gpus 8 \
+  run_pretrain.py \
+  --deepspeed_config ds_config.json \
+  --dataset_path /dataset/wudao_processed \
+  --model_name /models/llama3-8B \
+  --batch_size 512 \
+  --gradient_checkpointing
+```
+
+3. **关键性能优化点**：
+- 使用Megatron-LM风格的分片策略：
+```python
+# 模型并行初始化
+from deepspeed.module_inject import PEftModel
+model = PEftModel(
+    model_config,
+    tensor_parallel_degree=8,
+    pipeline_parallel_degree=1
+)
+```
+- 显存优化配置：
+```json
+// ds_config.json
+{
+  "zero_optimization": {
+    "stage": 3,
+    "offload_optimizer": {
+      "device": "cpu",
+      "pin_memory": true
+    },
+    "allgather_partitions": true,
+    "allgather_bucket_size": 5e8,
+    "reduce_scatter": true
+  }
+}
+```
+
+#### 五、验证与监控
+1. **性能指标采集**：
+```bash
+# 实时监控脚本
+nvidia-smi dmon -i 0,1,2,3,4,5,6,7 -s pucvmet -d 5 -o TD
+```
+
+2. **日志分析关键指标**：
+- 单卡利用率：GPU-Util ≥85%
+- 显存占用：≥90%显存利用率
+- 通信效率：NVLINK带宽≥200GB/s
+- 吞吐量：Tokens/Second（FP16下预期≥8000 tokens/s）
+
+#### 六、适配产出物清单
+1. **必须提交内容**：
+   - 模型适配代码（benchmarks/llama3-8B）
+   - NVIDIA专用Dockerfile
+   - 8卡性能优化配置文件
+   - WuDao预处理脚本
+   - 监控增强组件
+
+2. **验证文档**：
+   - 性能基线测试报告（含PyTorch/TensorRT对比）
+   - 多卡扩展效率曲线图
+   - 显存使用热力图分析
+
+该方案完整覆盖从硬件环境准备到最终性能验证的全流程，需严格遵循FlagPerf的厂商适配规范，确保评测结果的可复现性和可比性。建议使用NGC优化容器作为基础镜像，可减少环境差异带来的性能波动。

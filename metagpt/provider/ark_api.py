@@ -17,10 +17,10 @@ llm:
 from typing import Optional, Union
 
 from pydantic import BaseModel
-from volcenginesdkarkruntime import AsyncArk
-from volcenginesdkarkruntime._base_client import AsyncHttpxClientWrapper
-from volcenginesdkarkruntime._streaming import AsyncStream
-from volcenginesdkarkruntime.types.chat import ChatCompletion, ChatCompletionChunk
+# from volcenginesdkarkruntime import AsyncArk
+# from volcenginesdkarkruntime._base_client import AsyncHttpxClientWrapper
+# from volcenginesdkarkruntime._streaming import AsyncStream
+# from volcenginesdkarkruntime.types.chat import ChatCompletion, ChatCompletionChunk
 
 from metagpt.configs.llm_config import LLMType
 from metagpt.const import USE_CONFIG_TIMEOUT
@@ -37,7 +37,7 @@ class ArkLLM(OpenAILLM):
     见：https://www.volcengine.com/docs/82379/1263482
     """
 
-    aclient: Optional[AsyncArk] = None
+    # aclient: Optional[AsyncArk] = None
 
     def _init_client(self):
         """SDK: https://github.com/openai/openai-python#async-usage"""
@@ -92,7 +92,7 @@ class ArkLLM(OpenAILLM):
         self._update_costs(usage, chunk.model)
         return full_reply_content
 
-    async def _achat_completion(self, messages: list[dict], timeout=USE_CONFIG_TIMEOUT) -> ChatCompletion:
+    async def _achat_completion(self, messages: list[dict], timeout=USE_CONFIG_TIMEOUT):
         kwargs = self._cons_kwargs(messages, timeout=self.get_timeout(timeout))
         rsp: ChatCompletion = await self.aclient.chat.completions.create(**kwargs)
         self._update_costs(rsp.usage, rsp.model)

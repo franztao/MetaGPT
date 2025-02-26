@@ -386,3 +386,75 @@ def test_extract_content_from_output():
     assert output.startswith('{\n"Implementation approach"') and output.endswith(
         '"Anything UNCLEAR": "The requirement is clear to me."\n}'
     )
+
+
+
+def test_extract_content_from_output_0206():
+    """
+    cases
+        xxx [CONTENT] xxxx [/CONTENT]
+        xxx [CONTENT] xxx [CONTENT] xxxx [/CONTENT]
+        xxx [CONTENT] xxxx [/CONTENT] xxx [CONTENT][/CONTENT] xxx [CONTENT][/CONTENT]   # target pair is the last one
+    """
+    from metagpt.utils.repair_llm_raw_output import extract_content_from_output
+
+    output = (
+        """[CONTENT]
+{
+    "Language": "en_us",
+    "Programming Language": "Python",
+    "Original Requirements": "Develop a data analysis and visualization tool that takes a dataframe as input and outputs various relevant statistical metrics from the table.",
+    "Product Goals": [
+        "Provide comprehensive statistical analysis capabilities",
+        "Offer intuitive and interactive data visualization",
+        "Ensure ease of use for both technical and non-technical users"
+    ],
+    "User Stories": [
+        "As a data analyst, I want to input a dataframe and receive detailed statistical metrics so that I can understand the data better.",
+        "As a business user, I want to visualize data trends and patterns easily so that I can make informed decisions.",
+        "As a developer, I want to integrate this tool into my existing workflows with minimal setup so that I can save time.",
+        "As a non-technical user, I want to use the tool without needing to write code so that I can analyze data independently."
+    ],
+    "Competitive Analysis": [
+        "Tableau: Powerful visualization but requires a steep learning curve and is expensive.",
+        "Power BI: Great for business users but limited in advanced statistical analysis.",
+        "Pandas Profiling: Excellent for quick data profiling but lacks interactive visualization.",
+        "Google Data Studio: Free and easy to use but limited in customization and advanced analytics.",
+        "Matplotlib/Seaborn: Highly customizable but requires significant coding knowledge."
+    ],
+    "Competitive Quadrant Chart": "quadrantChart\n    title \"Reach and engagement of data analysis tools\"\n    x-axis \"Low Reach\" --> \"High Reach\"\n    y-axis \"Low Engagement\" --> \"High Engagement\"\n    quadrant-1 \"We should expand\"\n    quadrant-2 \"Need 
+to promote\"\n    quadrant-3 \"Re-evaluate\"\n    quadrant-4 \"May be improved\"\n    \"Tableau\": [0.8, 0.7]\n    \"Power BI\": [0.75, 0.65]\n    \"Pandas Profiling\": [0.6, 0.5]\n    \"Google Data Studio\": [0.7, 0.4]\n    \"Matplotlib/Seaborn\": [0.5, 0.6]\n    \"Our Target Product\": [0.7, 0.7]",
+    "Requirement Analysis": "The tool must handle various types of data inputs, provide a wide range of statistical metrics, and offer interactive visualizations. It should be user-friendly for both technical and non-technical users, with minimal setup required for integration.",
+    "Requirement Pool": [
+        [
+            "P0",
+            "The tool should accept a dataframe as input and output key statistical metrics such as mean, median, mode, standard deviation, etc."
+        ],
+        [
+            "P0",
+            "The tool should provide interactive visualizations such as histograms, scatter plots, and box plots."
+        ],
+        [
+            "P1",
+            "The tool should offer a user-friendly interface that requires no coding for basic operations."
+        ],
+        [
+            "P1",
+            "The tool should be easily integrable with existing Python workflows."
+        ],
+        [
+            "P2",
+            "The tool should support exporting visualizations and reports in multiple formats (PDF, PNG, etc.)."
+        ]
+    ],
+    "UI Design draft": "The UI will feature a clean, modern design with a sidebar for input options, a main display area for visualizations, and a bottom panel for statistical metrics. Users can drag and drop data files or input data directly. Interactive elements like sliders and dropdowns will allow for dynamic data exploration.",
+    "Anything UNCLEAR": "Clarify the specific statistical metrics and visualization types required by the end-users. Also, confirm the preferred level of interactivity and customization for the visualizations."
+}
+[/CONTENT]
+"""
+    )
+    output = extract_content_from_output(output)
+    print(output)
+    # assert output.startswith('{\n"Required Python third-party packages') and output.endswith(
+    #     'UNCLEAR": "How to start the game."\n]'
+    # )

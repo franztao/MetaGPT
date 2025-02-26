@@ -1,0 +1,124 @@
+### FlagPerf适配LAMA3-8B模型及WuDao数据集在1机8卡NVIDIA GPU的规划
+
+---
+
+#### 一、硬件环境配置
+| 配置项 | 要求 | Linux查验命令 |
+|--------|------|---------------|
+| GPU型号 | NVIDIA A100-SXM4-40GB *8 | `nvidia-smi -L` |
+| 显存容量 | 单卡≥40GB，整机≥320GB | `nvidia-smi`显存列 |
+| 互联拓扑 | 8卡NVLink全互联 | `nvidia-smi topo -m` |
+| CPU | 64核以上（如AMD EPYC 7B12） | `lscpu` |
+| 内存 | ≥512GB DDR4 | `free -h` |
+| 存储 | NVMe SSD RAID0≥10TB | `lsblk` |
+| 网络 | 本地无需跨节点 | `ip a` |
+
+---
+
+#### 二、软件环境配置
+| 层级 | 要求 | 配置验证方法 |
+|------|------|--------------|
+| 操作系统 | Ubuntu 20.04 LTS | `cat /etc/os-release` |
+| 内核版本 | 5.4.0-xxx | `uname -r` |
+| 驱动版本 | CUDA 11.8+ | `nvidia-smi`首行 |
+| 容器环境 | Docker 20.10+ | `docker --version` |
+| AI框架 | PyTorch 2.0+ | `python -c "import torch; print(torch.__version__)"` |
+| 编译器 | NVCC 11.8 | `nvcc --version` |
+| 通信库 | NCCL 2.18+ | `ldconfig -p \| grep nccl` |
+
+---
+
+#### 三、FlagPerf工程适配
+```bash
+FlagPerf/
+├── training/
+│   └── benchmarks/
+│       └── lama3_8B/               # 新增模型目录
+│           ├── megatron/           # 训练框架实现
+│           │   ├── case_config.yaml
+│           │   ├── main.py         # 主训练逻辑
+│           │   └── nvidia/         # 厂商定制
+│           │       └── A100_40_SXM/
+│           │           ├── env.sh  # 环境变量
+│           │           └── requirements.txt
+└── vendors/
+    └── nvidia/
+        ├── docker_images/
+        │   └── pytorch_2.0/        # 定制Docker镜像
+        └── nvidia_monitor.py       # 监控脚本
+```
+
+---
+
+#### 四、关键配置项
+1. **host.yaml配置示例**
+```yaml
+FLAGPERF_PATH: "/opt/FlagPerf/training"
+VENDOR: "nvidia"
+ACCE_CONTAINER_OPT: "--gpus all"
+CASES:
+    "lama3_8B:megatron:A100_40_SXM:1:8": "pytorch_2.0"
+```
+
+2. **环境变量配置（env.sh）**
+```bash
+# 分布式训练配置
+export MASTER_ADDR=$(hostname -I | awk '{print $1}')
+export MASTER_PORT=29500
+export OMP_NUM_THREADS=4
+
+# Megatron特定配置
+export CUDA_DEVICE_MAX_CONNECTIONS=1
+export NCCL_IB_HCA=mlx5
+```
+
+---
+
+#### 五、运行验证流程
+1. **启动容器**
+```bash
+sudo docker run -it --rm --gpus all \
+-v /path/to/wudao:/data/wudao \
+-v /path/to/checkpoints:/checkpoints \
+flagperf-nvidia-pytorch2.0:latest
+```
+
+2. **监控指标验证**
+```bash
+# GPU状态实时监控
+watch -n 1 "nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv"
+
+# 带宽利用率检查
+nvidia-smi dmon -s pucvt
+```
+
+3. **日志分析**
+```text
+result/
+└── run20230601_lama3_8B/
+    ├── nvidia_monitor.log    # 硬件监控数据
+    ├── rank0.log             # 主节点日志
+    └── throughput.log        # 吞吐量指标
+```
+
+---
+
+#### 六、常见问题排查
+1. **显存不足**
+```bash
+# 检查激活函数内存分配
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+```
+
+2. **NCCL通信异常**
+```bash
+# 启用调试模式
+export NCCL_DEBUG=INFO
+export NCCL_DEBUG_SUBSYS=INIT,COLL
+```
+
+3. **数据加载瓶颈**
+```bash
+# 验证存储带宽性能
+hdparm -Tt /dev/nvme0n1
+```

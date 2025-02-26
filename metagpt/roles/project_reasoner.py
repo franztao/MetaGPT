@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import os
+# This model's maximum context length is 32768 tokens. However, you requested 51924 tokens in the messages, Please reduce the length of the messages.
+
 import json
 from typing import Literal
 
@@ -32,9 +35,9 @@ Output a json following the format:
 """
 
 
-class DataInterpreter(Role):
-    name: str = "David"
-    profile: str = "DataInterpreter"
+class ProjectReasoner(Role):
+    name: str = "franz"
+    profile: str = "AI芯片评测工程师"
     auto_run: bool = True
     use_plan: bool = True
     use_reflection: bool = False
@@ -187,3 +190,7 @@ class DataInterpreter(Role):
             print(result)
             data_info = DATA_INFO.format(info=result)
             self.working_memory.add(Message(content=data_info, role="user", cause_by=CheckData))
+
+
+# if __name__ == '__main__':
+#     f1()

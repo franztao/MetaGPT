@@ -89,6 +89,7 @@ TOKEN_COSTS = {
     "google/gemini-pro-1.5": {"prompt": 0.0025, "completion": 0.0075},  # for openrouter, end
     "deepseek-chat": {"prompt": 0.00014, "completion": 0.00028},
     "deepseek-coder": {"prompt": 0.00014, "completion": 0.00028},
+    "DeepSeek-R1": {"prompt": 0.00000001, "completion": 0.00000001},
     # For ark model https://www.volcengine.com/docs/82379/1099320
     "doubao-lite-4k-240515": {"prompt": 0.000043, "completion": 0.000086},
     "doubao-lite-32k-240515": {"prompt": 0.000043, "completion": 0.000086},
@@ -289,6 +290,7 @@ TOKEN_MAX = {
     "google/gemini-pro-1.5": 4000000,
     "deepseek-chat": 32768,
     "deepseek-coder": 16385,
+    "DeepSeek-R1": 128000,
     "doubao-lite-4k-240515": 4000,
     "doubao-lite-32k-240515": 32000,
     "doubao-lite-128k-240515": 128000,

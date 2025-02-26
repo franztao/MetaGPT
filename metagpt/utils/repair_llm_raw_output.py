@@ -301,6 +301,16 @@ def retry_parse_json_text(output: str) -> Union[list, dict]:
 def extract_content_from_output(content: str, right_key: str = "[/CONTENT]"):
     """extract xxx from [CONTENT](xxx)[/CONTENT] using regex pattern"""
 
+    #  metagpt "Create a 2048 game" --project-name  "task3_deepseek_0208_v3"
+    # metagpt "Develop a data analysis and visualization tool that takes a dataframe as input and outputs various relevant statistical metrics from the table." --project-name  "task1_deepseek_0208_v3"
+    # metagpt "Write a login interface where users can input their username and password. If the entered username does not exist, a registration interface will pop up. If the username exists, a ’Login Successful’ message will be displayed." --project-name  "task2_deepseek_0208_v3"
+    # if len(content.strip())==0:
+    #     print("####" * 100)
+    #     print(content)
+    #     print("####" * 100)
+    #     content="""[CONTENT]{ "Language": "en_us",
+    # "Programming Language": "Python",
+    # "Original Requirements": "Develop a data analysis and visualization tool that takes a dataframe as input and outputs various relevant statistical metrics from the table."}[/CONTENT]"""
     def re_extract_content(cont: str, pattern: str) -> str:
         matches = re.findall(pattern, cont, re.DOTALL)
         for match in matches:

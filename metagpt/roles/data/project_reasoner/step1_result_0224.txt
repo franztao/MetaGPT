@@ -1,0 +1,157 @@
+### 在FlagPerf评测引擎下适配WuDao数据集和LLaMA3-8B的规划方案
+
+#### 一、整体适配规划
+1. **评测目标**：验证1机8卡NVIDIA GPU在LLaMA3-8B模型训练场景下的性能指标，包括：
+   - 吞吐量（Tokens/sec）
+   - MFU（Model FLOPs Utilization）
+   - 显存利用率
+   - 跨卡通信效率
+   - 端到端训练稳定性
+
+2. **适配路径**：
+   ```
+   [硬件环境准备] → [软件栈部署] → [数据集预处理] → [分布式训练配置] → [性能调优] → [指标采集]
+   ```
+
+---
+
+#### 二、硬件环境配置要求
+| 组件 | 最低要求 | 推荐配置 | 验证方法 |
+|------|----------|----------|----------|
+| GPU  | 8×NVIDIA V100 32GB | 8×NVIDIA A100 80GB | `nvidia-smi -L` |
+| CPU  | 64核 (Intel Xeon Gold 6230) | 128核 (AMD EPYC 7763) | `lscpu` |
+| 内存 | 512GB DDR4 | 1TB DDR4 | `free -h` |
+| 存储 | 10TB NVMe SSD | RAID0 NVMe SSD阵列 | `df -h` |
+| 网络 | 100GbE | NVIDIA Quantum-2 InfiniBand | `ibstat` |
+
+---
+
+#### 三、软件环境配置
+1. **基础软件栈**：
+   ```bash
+   # 验证命令示例
+   nvidia-driver-version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -n1)
+   cuda-version=$(nvcc --version | grep release | awk '{print $6}')
+   echo "Driver: $nvidia-driver-version | CUDA: $cuda-version"
+
+   # 推荐版本
+   NVIDIA Driver ≥ 525.85.12
+   CUDA Toolkit 11.8
+   cuDNN 8.9.4
+   NCCL 2.18.1
+   ```
+
+2. **深度学习框架**：
+   ```bash
+   # PyTorch定制构建（含Apex扩展）
+   pip3 install torch==2.1.0+cu118 torchvision==0.16.0+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
+   git clone https://github.com/NVIDIA/apex && cd apex && pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+   ```
+
+3. **FlagPerf环境**：
+   ```bash
+   git clone https://github.com/FlagOpen/FlagPerf.git
+   cd FlagPerf/training
+   pip install -r requirements.txt
+   ```
+
+---
+
+#### 四、关键配置实操指南
+
+1. **硬件状态诊断**：
+   ```bash
+   # GPU拓扑检查
+   nvidia-smi topo -m
+
+   # 显存带宽测试
+   bandwidthTest --device=all
+   ```
+
+2. **分布式训练配置**（以PyTorch为例）：
+   ```yaml
+   # configs/host.yaml 关键配置
+   hardware:
+     gpu_ids: [0,1,2,3,4,5,6,7]
+     fp16: true
+     gradient_accumulation_steps: 4
+
+   parallel:
+     tensor_parallel: 2
+     pipeline_parallel: 4
+     data_parallel: 1
+
+   optimization:
+     zero_stage: 3
+     offload_optimizer: "cpu"
+     activation_checkpointing: true
+   ```
+
+3. **WuDao数据集预处理**：
+   ```bash
+   # 使用FlagPerf工具链处理
+   python3 tools/wudao_preprocessor.py \
+     --input_dir /path/to/raw_data \
+     --output_dir /data/wudao_processed \
+     --tokenizer llama-3-8b \
+     --seq_length 4096 \
+     --shard_size 10GB
+   ```
+
+---
+
+#### 五、性能调优检查点
+1. **通信优化**：
+   ```bash
+   # NCCL参数调优
+   export NCCL_ALGO=Tree
+   export NCCL_SOCKET_IFNAME=ib0
+   export NCCL_NSOCKS_PERTHREAD=4
+   ```
+
+2. **显存优化**：
+   ```python
+   # 在模型定义中添加
+   from torch.utils.checkpoint import checkpoint_sequential
+   model = checkpoint_sequential(model, chunks=4)
+   ```
+
+3. **监控方案**：
+   ```bash
+   # 实时监控脚本
+   watch -n 1 "nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv"
+   ```
+
+---
+
+#### 六、指标采集与报告
+1. **FlagPerf日志配置**：
+   ```yaml
+   # case_config.yaml
+   logging:
+     frequency: 100 steps
+     metrics:
+       - throughput
+       - loss
+       - grad_norm
+     profiling:
+       enabled: true
+       tools: [nsys, dlprof]
+   ```
+
+2. **结果分析工具链**：
+   ```bash
+   # 生成性能报告
+   python3 FlagPerf/analysis/report_generator.py \
+     --log_dir ./results/llama3-8b-run1 \
+     --output_format html
+   ```
+
+---
+
+### 附：典型适配问题排查指南
+| 现象 | 诊断命令 | 解决方案 |
+|------|----------|----------|
+| GPU利用率低 | `nvprof --metrics achieved_occupancy` | 调整block/grid维度 |
+| 显存OOM | `gpustat --debug` | 启用ZeRO-3优化 |
+| 通信延迟 | `nccl-tests/all_reduce_perf` | 切换NCCL算法 |

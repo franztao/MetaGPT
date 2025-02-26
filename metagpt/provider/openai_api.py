@@ -86,8 +86,10 @@ class OpenAILLM(BaseLLM):
         return params
 
     async def _achat_completion_stream(self, messages: list[dict], timeout=USE_CONFIG_TIMEOUT) -> str:
+        logger.info(self.get_timeout(timeout))
+        timeout = 30000
         response: AsyncStream[ChatCompletionChunk] = await self.aclient.chat.completions.create(
-            **self._cons_kwargs(messages, timeout=self.get_timeout(timeout)), stream=True
+            **self._cons_kwargs(messages, timeout=timeout), stream=True
         )
         usage = None
         collected_messages = []
@@ -168,7 +170,7 @@ class OpenAILLM(BaseLLM):
         return self.get_choice_text(rsp)
 
     async def _achat_completion_function(
-        self, messages: list[dict], timeout: int = USE_CONFIG_TIMEOUT, **chat_configs
+            self, messages: list[dict], timeout: int = USE_CONFIG_TIMEOUT, **chat_configs
     ) -> ChatCompletion:
         messages = self.format_msg(messages)
         kwargs = self._cons_kwargs(messages=messages, timeout=self.get_timeout(timeout), **chat_configs)
@@ -226,16 +228,16 @@ class OpenAILLM(BaseLLM):
         """
         message = rsp.choices[0].message
         if (
-            message.tool_calls is not None
-            and message.tool_calls[0].function is not None
-            and message.tool_calls[0].function.arguments is not None
+                message.tool_calls is not None
+                and message.tool_calls[0].function is not None
+                and message.tool_calls[0].function.arguments is not None
         ):
             # reponse is code
             try:
                 return json.loads(message.tool_calls[0].function.arguments, strict=False)
             except json.decoder.JSONDecodeError as e:
                 error_msg = (
-                    f"Got JSONDecodeError for \n{'--'*40} \n{message.tool_calls[0].function.arguments}, {str(e)}"
+                    f"Got JSONDecodeError for \n{'--' * 40} \n{message.tool_calls[0].function.arguments}, {str(e)}"
                 )
                 logger.error(error_msg)
                 return self._parse_arguments(message.tool_calls[0].function.arguments)
@@ -290,12 +292,12 @@ class OpenAILLM(BaseLLM):
         return await self.aclient.audio.transcriptions.create(**kwargs)
 
     async def gen_image(
-        self,
-        prompt: str,
-        size: str = "1024x1024",
-        quality: str = "standard",
-        model: str = None,
-        resp_format: str = "url",
+            self,
+            prompt: str,
+            size: str = "1024x1024",
+            quality: str = "standard",
+            model: str = None,
+            resp_format: str = "url",
     ) -> list["Image"]:
         """image generate"""
         assert resp_format in ["url", "b64_json"]
