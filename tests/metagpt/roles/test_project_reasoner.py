@@ -137,7 +137,7 @@ async def f1():
     content = rec_dir(src, content)
 
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\README.md'
-    if os.path.exists(src):
+    if os.path.exists(p2):
         pass
     else:
         src = r'/home/hengtao/debug/FlagPerf/README.md'
@@ -146,7 +146,7 @@ async def f1():
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
 
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\input1.txt'
-    if os.path.exists(src):
+    if os.path.exists(p2):
         pass
     else:
         src = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input1.txt'
@@ -155,7 +155,7 @@ async def f1():
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
 
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\input2.txt'
-    if os.path.exists(src):
+    if os.path.exists(p2):
         pass
     else:
         src = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input2.txt'
