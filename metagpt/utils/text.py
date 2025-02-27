@@ -2,6 +2,7 @@ from typing import Generator, Sequence
 
 from metagpt.utils.token_counter import TOKEN_MAX, count_output_tokens
 
+from metagpt.logs import logger
 
 def reduce_message_length(
     msgs: Generator[str, None, None],
@@ -57,7 +58,7 @@ def generate_prompt_chunk(
     reserved = reserved + count_output_tokens(prompt_template + system_text, model_name)
     # 100 is a magic number to ensure the maximum context length is not exceeded
     max_token = TOKEN_MAX.get(model_name, 2048) - reserved - 100
-
+    logger.info(f"max_token:{max_token}")
     while paragraphs:
         paragraph = paragraphs.pop(0)
         token = count_output_tokens(paragraph, model_name)

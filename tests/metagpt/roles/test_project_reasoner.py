@@ -93,30 +93,33 @@ def rec_dir(src, content):
     return content
 
 
-# async def get_content(content):
-#     # content = content.inner_text
-#     chunk_summaries = []
-#     query = task_description
-#     from metagpt.actions.research import WEB_BROWSE_AND_SUMMARIZE_PROMPT
-#     prompt_template = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content="{}")
-#     llm = LLM()
-#     for prompt in generate_prompt_chunk(content, prompt_template, "DeepSeek-R1", "", 4096):
-#         logger.debug(prompt)
-#         summary = await llm.aask(prompt, [""])
-#         if summary == "Not relevant.":
-#             continue
-#         chunk_summaries.append(summary)
-#
-#     if len(chunk_summaries) == 1:
-#         return chunk_summaries[0]
-#
-#     content = "\n".join(chunk_summaries)
-#     # prompt = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content=content)
-#     # summary = await llm.aask(prompt, [system_text])
-#     return content
+async def get_content(content):
+    # content = content.inner_text
+    chunk_summaries = []
+    query = task_description
+    from metagpt.actions.research import WEB_BROWSE_AND_SUMMARIZE_PROMPT
+    prompt_template = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content="{}")
+    llm = LLM()
+    pts=generate_prompt_chunk(content, prompt_template, "DeepSeek-R1", "", 4096)
+    # l=len(list(pts))
+    # logger.debug(f"pts:{l}")
+    for prompt in pts:
+        logger.debug(prompt)
+        summary = await llm.aask(prompt, [""])
+        if summary == "Not relevant.":
+            continue
+        chunk_summaries.append(summary)
+
+    if len(chunk_summaries) == 1:
+        return chunk_summaries[0]
+
+    content = "\n".join(chunk_summaries)
+    # prompt = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content=content)
+    # summary = await llm.aask(prompt, [system_text])
+    return content
 
 
-def f1():
+async def f1():
     content = ""
     # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf'
     src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\nvidia\llama3_8B-megatron'
@@ -132,7 +135,7 @@ def f1():
     # with open(p2, "r", encoding="utf-8") as f:
     #     ls = f.readlines()
     # content = content + "\n" + "---" * 5 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 5
-    # content = await get_content(content)
+    content = await get_content(content)
 
     pt = prompt.format(goal=goal, memory_short=memory_short, memory_long=content, output_demand=output_demand)
     print(pt)
@@ -142,11 +145,11 @@ def f1():
 
 
 # mocker
-@pytest.mark.asyncio
+# @pytest.mark.asyncio
 async def test_interpreter_react_mode():
     # mocker.patch("metagpt.actions.di.execute_nb_code.ExecuteNbCode.run", return_value=("a successful run", True))
 
-    content = f1()
+    content = await f1()
     print(content)
     requirement = content
 

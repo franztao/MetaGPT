@@ -485,7 +485,11 @@ def count_output_tokens(string: str, model: str) -> int:
         num_tokens = vo.count_tokens(string)
         return num_tokens
     try:
-        encoding = tiktoken.encoding_for_model(model)
+        if model == "DeepSeek-R1":
+            from deepseek_tokenizer import ds_token
+            encoding = ds_token
+        else:
+            encoding = tiktoken.encoding_for_model(model)
     except KeyError:
         logger.info(f"Warning: model {model} not found in tiktoken. Using cl100k_base encoding.")
         encoding = tiktoken.get_encoding("cl100k_base")
