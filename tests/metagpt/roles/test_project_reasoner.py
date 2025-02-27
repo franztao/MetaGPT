@@ -3,8 +3,10 @@ import os
 
 import pytest
 
+from metagpt.llm import LLM
 from metagpt.logs import logger
 from metagpt.roles.project_reasoner import ProjectReasoner
+from metagpt.utils.text import generate_prompt_chunk
 
 prompt = """
 # 背景
@@ -40,9 +42,9 @@ prompt = """
 """
 
 # import jionlp as jio
-task_description=r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
-role=r'您是项目的第一位处理人（项目经理，产品经理，架构师），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己不清楚和疑问,通过shell工具查看当前环境信息。如果通过shell工具还有不清楚的就提出问题来'
-requirements=r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用工具一定不要有删除卸载等高危操作'
+task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
+role = r'您是项目的第一位处理人（项目经理，产品经理，架构师），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己不清楚和疑问,通过shell工具查看当前环境信息。如果通过shell工具还有不清楚的就提出问题来'
+requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用工具一定不要有删除卸载等高危操作'
 goal = f'{task_description}{role}{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
@@ -91,7 +93,30 @@ def rec_dir(src, content):
     return content
 
 
-def f1():
+async def get_content(content):
+    # content = content.inner_text
+    chunk_summaries = []
+    query = task_description
+    from metagpt.actions.research import WEB_BROWSE_AND_SUMMARIZE_PROMPT
+    prompt_template = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content="{}")
+    llm = LLM()
+    for prompt in generate_prompt_chunk(content, prompt_template, "DeepSeek-R1", "", 4096):
+        logger.debug(prompt)
+        summary = await llm.aask(prompt, [""])
+        if summary == "Not relevant.":
+            continue
+        chunk_summaries.append(summary)
+
+    if len(chunk_summaries) == 1:
+        return chunk_summaries[0]
+
+    content = "\n".join(chunk_summaries)
+    # prompt = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content=content)
+    # summary = await llm.aask(prompt, [system_text])
+    return content
+
+
+async def f1():
     content = ""
     # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf'
     src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\nvidia\llama3_8B-megatron'
@@ -107,6 +132,7 @@ def f1():
     # with open(p2, "r", encoding="utf-8") as f:
     #     ls = f.readlines()
     # content = content + "\n" + "---" * 5 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 5
+    # content = await get_content(content)
 
     pt = prompt.format(goal=goal, memory_short=memory_short, memory_long=content, output_demand=output_demand)
     print(pt)
@@ -121,12 +147,16 @@ async def test_interpreter_react_mode():
     # mocker.patch("metagpt.actions.di.execute_nb_code.ExecuteNbCode.run", return_value=("a successful run", True))
 
     content = f1()
+    print(content)
     requirement = content
 
     di = ProjectReasoner(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(rsp)
     assert len(rsp.content) > 0
+
+
+# C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
 
 if __name__ == '__main__':
     asyncio.run(test_interpreter_react_mode())

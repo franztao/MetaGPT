@@ -288,7 +288,7 @@ TOKEN_MAX = {
     "google/gemini-pro-1.5": 4000000,
     "deepseek-chat": 32768,
     "deepseek-coder": 16385,
-    "DeepSeek-R1": 128000,
+    "DeepSeek-R1": 32000,
     "doubao-lite-4k-240515": 4000,
     "doubao-lite-32k-240515": 32000,
     "doubao-lite-128k-240515": 128000,

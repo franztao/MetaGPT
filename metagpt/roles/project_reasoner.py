@@ -36,8 +36,8 @@ Output a json following the format:
 
 
 class ProjectReasoner(Role):
-    name: str = "franz"
-    profile: str = "AI芯片评测工程师"
+    name: str = "AI芯片评测工程师"
+    profile: str = "项目的第一位处理人（项目经理，产品经理，架构师）"
     auto_run: bool = True
     use_plan: bool = True
     use_reflection: bool = False
