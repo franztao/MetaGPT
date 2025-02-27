@@ -56,11 +56,11 @@ output_demand = '''输出结论包括：
 
 
 def judge_path(p2, content):
-    if p2.endswith(".md"):
+    if p2.endswith(".md") or p2.endswith(".sh"):
         print(p2)
         with open(p2, "r", encoding="utf-8") as f:
             ls = f.readlines()
-        content = content + "\n" + "---" * 5 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 5
+        content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
     return content
 
 
@@ -128,13 +128,41 @@ async def f1():
     else:
         src = r'/home/hengtao/debug/FlagPerf/training/nvidia/llama3_8B-megatron'
     content = rec_dir(src, content)
-    # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\benchmarks\llama3_8B\megatron'
-    # content = rec_dir(src, content)
 
-    # p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\README.md'
-    # with open(p2, "r", encoding="utf-8") as f:
-    #     ls = f.readlines()
-    # content = content + "\n" + "---" * 5 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 5
+    src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\benchmarks\llama3_8B\megatron'
+    if os.path.exists(src):
+        pass
+    else:
+        src = r'/home/hengtao/debug/FlagPerf/training/benchmarks/llama3_8B/megatron'
+    content = rec_dir(src, content)
+
+    p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\README.md'
+    if os.path.exists(src):
+        pass
+    else:
+        src = r'/home/hengtao/debug/FlagPerf/README.md'
+    with open(p2, "r", encoding="utf-8") as f:
+        ls = f.readlines()
+    content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
+
+    p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\input1.txt'
+    if os.path.exists(src):
+        pass
+    else:
+        src = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input1.txt'
+    with open(p2, "r", encoding="utf-8") as f:
+        ls = f.readlines()
+    content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
+
+    p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\input2.txt'
+    if os.path.exists(src):
+        pass
+    else:
+        src = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input2.txt'
+    with open(p2, "r", encoding="utf-8") as f:
+        ls = f.readlines()
+    content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
+
     content = await get_content(content)
 
     pt = prompt.format(goal=goal, memory_short=memory_short, memory_long=content, output_demand=output_demand)
@@ -160,6 +188,6 @@ async def test_interpreter_react_mode():
 
 
 # C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
-
+# python /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
 if __name__ == '__main__':
     asyncio.run(test_interpreter_react_mode())
