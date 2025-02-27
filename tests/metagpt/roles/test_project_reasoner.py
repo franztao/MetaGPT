@@ -93,30 +93,30 @@ def rec_dir(src, content):
     return content
 
 
-async def get_content(content):
-    # content = content.inner_text
-    chunk_summaries = []
-    query = task_description
-    from metagpt.actions.research import WEB_BROWSE_AND_SUMMARIZE_PROMPT
-    prompt_template = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content="{}")
-    llm = LLM()
-    for prompt in generate_prompt_chunk(content, prompt_template, "DeepSeek-R1", "", 4096):
-        logger.debug(prompt)
-        summary = await llm.aask(prompt, [""])
-        if summary == "Not relevant.":
-            continue
-        chunk_summaries.append(summary)
+# async def get_content(content):
+#     # content = content.inner_text
+#     chunk_summaries = []
+#     query = task_description
+#     from metagpt.actions.research import WEB_BROWSE_AND_SUMMARIZE_PROMPT
+#     prompt_template = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content="{}")
+#     llm = LLM()
+#     for prompt in generate_prompt_chunk(content, prompt_template, "DeepSeek-R1", "", 4096):
+#         logger.debug(prompt)
+#         summary = await llm.aask(prompt, [""])
+#         if summary == "Not relevant.":
+#             continue
+#         chunk_summaries.append(summary)
+#
+#     if len(chunk_summaries) == 1:
+#         return chunk_summaries[0]
+#
+#     content = "\n".join(chunk_summaries)
+#     # prompt = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content=content)
+#     # summary = await llm.aask(prompt, [system_text])
+#     return content
 
-    if len(chunk_summaries) == 1:
-        return chunk_summaries[0]
 
-    content = "\n".join(chunk_summaries)
-    # prompt = WEB_BROWSE_AND_SUMMARIZE_PROMPT.format(query=query, content=content)
-    # summary = await llm.aask(prompt, [system_text])
-    return content
-
-
-async def f1():
+def f1():
     content = ""
     # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf'
     src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\nvidia\llama3_8B-megatron'
