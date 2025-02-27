@@ -62,11 +62,11 @@ def shell_tool(tool_input: Union[str, dict[str, Any]],
     st = ShellTool()
 
     try:
-        # result = st.run(tool_input, verbose, start_color, color, callbacks, tags=tags, metadata=metadata,
-        #                 run_name=run_name,
-        #                 run_id=run_id, config=config,
-        #                 tool_call_id=tool_call_id, kwargs=kwargs)
-        result="success"
+        result = st.run(tool_input, verbose, start_color, color, callbacks, tags=tags, metadata=metadata,
+                        run_name=run_name,
+                        run_id=run_id, config=config,
+                        tool_call_id=tool_call_id, kwargs=kwargs)
+        # result="success"
     except Exception as e:
         logger.error(e)
         result = ""
