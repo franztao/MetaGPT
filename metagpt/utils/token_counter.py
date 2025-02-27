@@ -101,7 +101,6 @@ TOKEN_COSTS = {
     "llama3-8b-llama3-8b-instruct": {"prompt": 0.0, "completion": 0.0},
 }
 
-
 """
 QianFan Token Price https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7#tokens%E5%90%8E%E4%BB%98%E8%B4%B9
 Due to QianFan has multi price strategies, we unify `Tokens post-payment` as a statistical method.
@@ -207,7 +206,6 @@ DASHSCOPE_TOKEN_COSTS = {
     "chatyuan-large-v2": {"prompt": 0.0, "completion": 0.0},
     "billa-7b-sft-v1": {"prompt": 0.0, "completion": 0.0},
 }
-
 
 FIREWORKS_GRADE_TOKEN_COSTS = {
     "-1": {"prompt": 0.0, "completion": 0.0},  # abnormal condition
@@ -392,11 +390,15 @@ def count_input_tokens(messages, model="gpt-3.5-turbo-0125"):
             for key, value in message.items():
                 num_tokens += vo.count_tokens(str(value))
         return num_tokens
-    try:
-        encoding = tiktoken.encoding_for_model(model)
-    except KeyError:
-        logger.info(f"Warning: model {model} not found in tiktoken. Using cl100k_base encoding.")
-        encoding = tiktoken.get_encoding("cl100k_base")
+    if model == "DeepSeek-R1":
+        from deepseek_tokenizer import ds_token
+        encoding = ds_token
+    else:
+        try:
+            encoding = tiktoken.encoding_for_model(model)
+        except KeyError:
+            logger.info(f"Warning: model {model} not found in tiktoken. Using cl100k_base encoding.")
+            encoding = tiktoken.get_encoding("cl100k_base")
     if model in {
         "gpt-3.5-turbo-0613",
         "gpt-3.5-turbo-16k-0613",

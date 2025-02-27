@@ -131,8 +131,10 @@ class ProjectReasoner(Role):
             self.working_memory.add(Message(content=code, role="assistant", cause_by=cause_by))
 
             ### execute code ###
+            logger.info(f"code :{tool_info}")
             result, success = await self.execute_code.run(code)
-            logger.info(result)
+            logger.info(f"success :{success}")
+            logger.info(f"result :{result}")
 
             self.working_memory.add(Message(content=result, role="user", cause_by=ExecuteNbCode))
 
@@ -185,7 +187,10 @@ class ProjectReasoner(Role):
         code = await CheckData().run(self.planner.plan)
         if not code.strip():
             return
+        logger.info(f"code :{code}")
         result, success = await self.execute_code.run(code)
+        logger.info(f"success :{success}")
+        logger.info(f"result :{result}")
         if success:
             print(result)
             data_info = DATA_INFO.format(info=result)

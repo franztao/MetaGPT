@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import pytest
@@ -7,7 +8,17 @@ from metagpt.roles.project_reasoner import ProjectReasoner
 
 prompt = """
 # 背景
-您是一位GPU显卡硬件评测引擎，旨在建立以产业实践为导向的指标体系，评测AI硬件在软件栈组合（模型+框架+编译器）下的实际能力。您是项目的第一位负责人，首先你会阅读大量资料，然后分析和推理，再通过shell工具查看当前环境是否具备运行调试等的条件，确定项目接下来还需要具备哪些条件和内容，如果自己不清楚和疑问的就提出来。
+【AI芯片基准测试标准化难题及FlagPerf诞生的背景】
+1.行业痛点
+- 缺乏公认标准：AI芯片领域长期缺乏统一的基准测试规范和标准体系
+- 技术生态复杂：呈现"三维爆炸"特征
+- 硬件维度：X款异构芯片架构百花齐放
+- 软件维度：Y个主流AI框架技术栈差异大
+- 算法维度：Z类模型持续涌现，覆盖CV/NLP/多模态等场景
+2.标准化挑战
+- 适配复杂度指数级增长：理论需完成X×Y×Z种组合的适配验证
+- 动态扩展压力：各维度技术栈持续快速演进
+- 落地实施难度：传统方案需投入大量人力完成环境部署、接口适配、版本兼容
 # 目标，任务描述
 ```
 {goal}
@@ -29,14 +40,16 @@ prompt = """
 """
 
 # import jionlp as jio
-goal = r'在FlagPerf AI硬件评测引擎下，如何对wudao数据集和lama3-8B模型在1机8卡上适配Nvidia A100的GPU显卡。当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf"'
+task_description=r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
+role=r'您是项目的第一位处理人（项目经理，产品经理，架构师），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己不清楚和疑问,通过shell工具查看当前环境信息。如果通过shell工具还有不清楚的就提出问题来'
+requirements=r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用工具一定不要有删除卸载等高危操作'
+goal = f'{task_description}{role}{requirements}'
+
+# 再通过shell工具查看当前环境是否具备运行调试等的条件
 memory_short = ''
 memory_long = ''
 output_demand = '''输出结论包括：
-整体规划
-适配该模型所需的硬件环境配置和软件环境配置
-在Linux操作系统中如何查阅这些配置
-完成适配任务所需的代码、模型、数据、镜像等
+项目接下来的负责人（配置部署工程师）还需要做哪些,比如需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件
 '''
 
 
@@ -82,6 +95,10 @@ def f1():
     content = ""
     # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf'
     src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\nvidia\llama3_8B-megatron'
+    if os.path.exists(src):
+        pass
+    else:
+        src = r'/home/hengtao/debug/FlagPerf/training/nvidia/llama3_8B-megatron'
     content = rec_dir(src, content)
     # src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\benchmarks\llama3_8B\megatron'
     # content = rec_dir(src, content)
@@ -98,8 +115,9 @@ def f1():
     return pt
 
 
+# mocker
 @pytest.mark.asyncio
-async def test_interpreter_react_mode(mocker):
+async def test_interpreter_react_mode():
     # mocker.patch("metagpt.actions.di.execute_nb_code.ExecuteNbCode.run", return_value=("a successful run", True))
 
     content = f1()
@@ -109,3 +127,6 @@ async def test_interpreter_react_mode(mocker):
     rsp = await di.run(requirement)
     logger.info(rsp)
     assert len(rsp.content) > 0
+
+if __name__ == '__main__':
+    asyncio.run(test_interpreter_react_mode())
