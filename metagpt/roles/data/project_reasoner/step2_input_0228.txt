@@ -1,0 +1,12 @@
+修改文件: training/run_benchmarks/config/cluster_conf.py，-HOSTS = ["10.1.2.2", "10.1.2.3", "10.1.2.4"]+HOSTS = ["10.2.179.28"]
+新增文件：training/nvidia/llama3_8B-megatron/config/config_A100x1x1.py,'tokenizer_path = "llama-3-8b"
+localbs = 1
+train_steps = 300
+theoryflops = 312000000000000.0
+megatron_path = "/workspace/Megatron-LM" # need to be aligned with DockerFile. In NGCtorch, it's /workspace/ + Megatron-LM
+tensor_parallel = 1
+pipeline_parallel = 2
+'
+修改文件：training/run_benchmarks/config/test_conf.py，-ENV MCBLAS_CUSTOMIZED_CONFIG_PATH=/workspace/Megatron-LM_metax/mcblas_customized_config.yaml
++"llama3_8B:megatron_core060:A100:1:2:1": "/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"
+

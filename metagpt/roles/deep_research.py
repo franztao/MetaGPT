@@ -35,9 +35,9 @@ Output a json following the format:
 """
 
 
-class ProjectReasoner(Role):
+class DeepResearch(Role):
     name: str = "AI芯片评测工程师"
-    profile: str = "项目的第一位处理人（项目经理，产品经理，架构师）"
+    profile: str = "项目的第四位处理人，负责项目在最后结果的汇总和登记"
     auto_run: bool = True
     use_plan: bool = True
     use_reflection: bool = False
