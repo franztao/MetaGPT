@@ -199,6 +199,6 @@ async def test_interpreter_react_mode():
 
 
 # C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
-# python /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
+# /home/hengtao/miniconda3/envs/metagpt39/bin/python /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
 if __name__ == '__main__':
     asyncio.run(test_interpreter_react_mode())
