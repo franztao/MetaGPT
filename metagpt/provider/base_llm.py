@@ -148,8 +148,9 @@ class BaseLLM(ABC):
             message.extend(msg)
         if stream is None:
             stream = self.config.stream
-        logger.debug(message)
+        logger.info(f"aask:{message}")
         rsp = await self.acompletion_text(message, stream=stream, timeout=self.get_timeout(timeout))
+        logger.info(f"rsp:{json.dumps(rsp,indent=4)}")
         return rsp
 
     def _extract_assistant_rsp(self, context):

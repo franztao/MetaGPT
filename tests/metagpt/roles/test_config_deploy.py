@@ -38,8 +38,8 @@ prompt = """
 
 # import jionlp as jio
 task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
-role = r'您是项目的第二位处理人，负责项目在机器上配置部署，首先你会阅读上一位处理人输出的项目分析报告（```短期记忆```），然后进行理解和执行、确定自己做哪些,比如哪些操作准备，下载哪些数据、代码和模型checkpoint等，要修改哪些代码，和操作一些必要的前置条件，通过shell工具执行具体的配置部署'
-requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",数据和模型地址在"/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir",调用工具一定不要有删除卸载等高危操作'
+role = r'您是项目的第二位处理人，负责项目在机器上配置部署，首先你会阅读上一位处理人输出的项目分析报告（```短期记忆```），然后进行理解和执行、确定自己做哪些,比如哪些操作准备，下载哪些数据、代码和模型checkpoint等，要修改哪些代码，和操作一些必要的前置条件，通过工具执行具体的配置部署'
+requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",数据和模型地址在"/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir",参考的模板地址是“/home/hengtao/code/task/FlagPerf/training/nvidia/llama3_8B-megatron/config/config_A100x1x8.py”,magatron的地址是“/workspace/Megatron-LM”,调用工具一定不要有删除卸载等高危操作'
 goal = f'{task_description}。{role}。{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件

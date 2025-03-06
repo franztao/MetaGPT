@@ -1,0 +1,557 @@
+/home/hengtao/debug/FlagPerf/training/nvidia
+├── aquila2_34B_container-in_container
+│   ├── config.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── singlenode_adapt.sh
+├── aquila2_70B_container-in_container
+│   ├── config.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── singlenode_adapt.sh
+├── aquila2_7B_container-in_container
+│   ├── config.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── singlenode_adapt.sh
+├── aquila2_7b_finetune-flagscale
+│   ├── config
+│   │   ├── config_A800x1x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── aquila2_7b-flagscale
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── baichuan2_13b-deepspeed
+│   ├── config
+│   │   ├── config_H800x2x8.py
+│   │   ├── ds_config.json
+│   │   ├── net.sh
+│   │   └── requirements.txt
+│   └── README.md
+├── bert_hf-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── bert-paddle
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   └── README.md
+├── bert-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_Ampere_common.py
+│   │   ├── config_common.py
+│   │   ├── environment_variables.sh
+│   │   └── layers
+│   │       ├── attention.py
+│   │       ├── bmm1.py
+│   │       ├── bmm2.py
+│   │       ├── fmha.py
+│   │       ├── __init__.py
+│   │       ├── mha.py
+│   │       └── softmax.py
+│   └── README.md
+├── bigtransfer-pytorch
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   └── config_common.py
+│   ├── extern
+│   └── README.md
+├── chatglm3_6b-deepspeed
+│   ├── config
+│   │   ├── config_H100x1x8.py
+│   │   ├── ds_config.json
+│   │   ├── net.sh
+│   │   └── requirements.txt
+│   └── README.md
+├── cpm-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.example
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   │   ├── layers
+│   │   │   ├── __init__.py
+│   │   │   └── layernorm.py
+│   │   └── trainer_adapter.py
+│   └── README.md
+├── detr-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── distilbert-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── dlrm-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── csrc
+│   │   ├── dot_based_interact
+│   │   │   ├── dot_based_interact_fp16_bwd.cu
+│   │   │   ├── dot_based_interact_fp16_fwd.cu
+│   │   │   ├── dot_based_interact_fp32_bwd.cu
+│   │   │   ├── dot_based_interact_fp32_fwd.cu
+│   │   │   ├── dot_based_interact_tf32_bwd.cu
+│   │   │   ├── dot_based_interact_tf32_fwd.cu
+│   │   │   └── shared_utils.cuh
+│   │   ├── dot_based_interact_ampere
+│   │   │   ├── dot_based_interact_pytorch_types.cu
+│   │   │   └── pytorch_ops.cpp
+│   │   ├── dot_based_interact.py
+│   │   ├── dot_based_interact_volta
+│   │   │   ├── dot_based_interact_pytorch_types.cu
+│   │   │   └── pytorch_ops.cpp
+│   │   ├── fused_gather_embedding.py
+│   │   ├── gather_gpu_fused.cu
+│   │   ├── gather_gpu_fused_pytorch_impl.cu
+│   │   ├── __init__.py
+│   │   ├── pytorch_embedding_ops.cpp
+│   │   ├── setup.py
+│   │   ├── sparse_embedding.py
+│   │   └── sparse_gather
+│   │       ├── common.h
+│   │       ├── gather_gpu.cu
+│   │       └── sparse_pytorch_ops.cpp
+│   ├── extern
+│   │   ├── cuda_ext
+│   │   │   ├── dot_based_interact.py
+│   │   │   ├── fused_gather_embedding.py
+│   │   │   ├── __init__.py
+│   │   │   └── sparse_embedding.py
+│   │   ├── dataloaders
+│   │   │   ├── defaults.py
+│   │   │   ├── feature_spec.py
+│   │   │   ├── __init__.py
+│   │   │   └── utils.py
+│   │   ├── model
+│   │   │   ├── distributed.py
+│   │   │   ├── __init__.py
+│   │   │   └── network
+│   │   │       ├── embeddings.py
+│   │   │       ├── factories.py
+│   │   │       ├── __init__.py
+│   │   │       ├── interactions.py
+│   │   │       ├── mlps.py
+│   │   │       └── parts.py
+│   │   ├── trainer_adapter.py
+│   │   └── utils
+│   │       ├── checkpointing
+│   │       │   ├── distributed.py
+│   │       │   ├── __init__.py
+│   │       │   └── model.py
+│   │       ├── distributed.py
+│   │       ├── __init__.py
+│   │       └── utils.py
+│   └── README.md
+├── docker_image
+│   ├── deepspeed
+│   │   ├── deepspeed_install.sh
+│   │   └── Dockerfile
+│   ├── deepspeed-torch
+│   │   ├── deepspeed-torch_install.sh
+│   │   └── Dockerfile
+│   ├── flagscale
+│   │   ├── Dockerfile
+│   │   └── flagscale_install.sh
+│   ├── flagscale_2409
+│   │   ├── Dockerfile
+│   │   └── flagscale_2409_install.sh
+│   ├── megatron
+│   │   ├── Dockerfile
+│   │   └── megatron_install.sh
+│   ├── megatron_core060
+│   │   ├── Dockerfile
+│   │   └── megatron_core060_install.sh
+│   ├── megatron-deepspeed
+│   │   ├── Dockerfile
+│   │   └── megatron-deepspeed_install.sh
+│   ├── megatron_pai
+│   │   ├── Dockerfile
+│   │   └── megatron_pai_install.sh
+│   ├── paddle
+│   │   ├── Dockerfile
+│   │   └── paddle_install.sh
+│   ├── paddle_2.5.1
+│   │   ├── Dockerfile
+│   │   └── paddle_2.5.1_install.sh
+│   ├── pytorch_1.10
+│   │   ├── bind.sh
+│   │   ├── Dockerfile
+│   │   ├── pytorch1.10_install.sh
+│   │   └── requirements.txt
+│   ├── pytorch_1.12
+│   │   ├── Dockerfile
+│   │   └── pytorch1.12_install.sh
+│   ├── pytorch_1.13
+│   │   ├── Dockerfile
+│   │   └── pytorch1.13_install.sh
+│   ├── pytorch_1.8
+│   │   ├── Dockerfile
+│   │   └── pytorch_install.sh
+│   ├── pytorch_2.0.1
+│   │   ├── Dockerfile
+│   │   └── pytorch_2.0.1_install.sh
+│   ├── tensorflow1
+│   │   ├── Dockerfile
+│   │   └── tensorflow1_install.sh
+│   └── tensorflow2
+│       ├── Dockerfile
+│       └── tensorflow2_install.sh
+├── efficientnet-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── config_common.py
+│   ├── extern
+│   └── README.md
+├── faster_rcnn-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── glm-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x2.py
+│   │   ├── config_A100x1x4.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.example
+│   │   ├── config_A100x2x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   │   ├── converter.py
+│   │   ├── layers
+│   │   │   ├── __init__.py
+│   │   │   ├── layernorm.py
+│   │   │   ├── transformer_block.py
+│   │   │   └── transformer.py
+│   │   └── trainer_adapter.py
+│   └── README.md
+├── gpt2-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── config_common.py
+│   ├── extern
+│   └── README.md
+├── gpt3_13B-paddle
+│   ├── config
+│   │   ├── config_TP1PP1SH2SP8A10040Gx1x8.py
+│   │   ├── config_TP1PP1SH2SP8A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10040Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10080Gx1x8.py
+│   │   ├── environment_variables.sh -> ../../gpt3_6.7B-paddle/config/environment_variables.sh
+│   │   └── requirements.txt -> ../../gpt3_6.7B-paddle/config/requirements.txt
+│   ├── extern -> ../gpt3_6.7B-paddle/extern
+│   └── README.md -> ../gpt3_6.7B-paddle/README.md
+├── gpt3_6.7B-paddle
+│   ├── config
+│   │   ├── config_TP1PP1SH2SP8A10040Gx1x8.py
+│   │   ├── config_TP1PP1SH2SP8A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10040Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10080Gx1x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── llama1_13B-paddle
+│   ├── config
+│   │   ├── config_TP1PP1SH2SP8A10040Gx1x8.py
+│   │   ├── config_TP1PP1SH2SP8A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10040Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10080Gx1x8.py
+│   │   ├── environment_variables.sh -> ../../llama1_7B-paddle/config/environment_variables.sh
+│   │   └── requirements.txt -> ../../llama1_7B-paddle/config/requirements.txt
+│   ├── extern -> ../llama1_7B-paddle/extern/
+│   └── README.md -> ../llama1_7B-paddle/README.md
+├── llama1_7B-paddle
+│   ├── config
+│   │   ├── config_TP1PP1SH2SP8A10040Gx1x8.py
+│   │   ├── config_TP1PP1SH2SP8A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH1SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10040Gx1x8.py
+│   │   ├── config_TP2PP1SH2SP4A10080Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10040Gx1x8.py
+│   │   ├── config_TP2PP4SH1SP1A10080Gx1x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── llama2_70B-megatron
+│   ├── config
+│   │   ├── config_H800x4x8.py
+│   │   ├── requirements.txt
+│   │   └── training_adapter.sh
+│   └── README.md
+├── llama2_7b-deepspeed
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_H800x1x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── llama2_7b_finetune-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── llama2_7b-megatron-deepspeed
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   ├── ds_config.json
+│   │   ├── requirements.txt
+│   │   └── training_adapter.sh
+│   ├── extern
+│   └── README.md
+├── llama3_70B_continuetrain-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── llama3_70B-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── llama3_70B-megatron
+│   ├── config
+│   │   ├── config_H100x8x8.py
+│   │   ├── requirements.txt
+│   │   ├── training_adapter_H100_fp8.sh
+│   │   └── training_adapter.sh
+│   └── README.md
+├── llama3_8B-megatron
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_H100x1x8.py
+│   │   ├── requirements.txt
+│   │   ├── training_adapter_H100_fp8.sh
+│   │   └── training_adapter.sh
+│   ├── config_A100x1x8.py
+│   ├── configs
+│   │   └── config_A100x1x1.py
+│   ├── data
+│   └── README.md
+├── llava1.5_13b-deepspeed-torch
+│   ├── config
+│   │   ├── config_A800x1x8.py
+│   │   ├── ds_config.json
+│   │   ├── net.sh
+│   │   └── requirements.txt
+│   └── README.md
+├── llava1.5_7b_continuetrain-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── llava1.5_7b-deepspeed-torch
+│   ├── config
+│   │   ├── config_A800x1x8.py
+│   │   ├── ds_config.json
+│   │   ├── net.sh
+│   │   └── requirements.txt
+│   └── README.md
+├── llava1.5_7b-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── longformer-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── mask_rcnn-pytorch
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_common.py
+│   │   └── environment_variables.sh
+│   ├── extern
+│   └── README.md
+├── mixtral_8x7B_continuetrain-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── mixtral_8x7B-flagscale
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   └── requirements.txt
+│   └── README.md
+├── mixtral_8x7B-megatron
+│   ├── config
+│   │   ├── config_H100x4x8.py
+│   │   ├── requirements.txt
+│   │   └── training_adapter.sh
+│   └── README.md
+├── mobilenetv2-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   └── config_common.py
+│   ├── extern
+│   └── README.md
+├── moflow-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── environment_variables.sh
+│   │   └── requirements.txt
+│   ├── extern
+│   │   └── trainer_adapter.py
+│   └── README.md
+├── nvidia_monitor.py
+├── qwen1.5_MoE-megatron
+│   ├── config
+│   │   ├── config_A800x1x8.py
+│   │   ├── requirements.txt
+│   │   └── training_adapter.sh
+│   └── README.md
+├── README.md
+├── resnet50-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   └── config_A100x2x8.py
+│   ├── extern
+│   └── README.md
+├── resnet50-tensorflow2
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   └── config_A100x1x8.py
+│   └── README.md
+├── retinanet-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── environment_variables.sh
+│   ├── extern
+│   └── README.md
+├── standalone_monitor.py
+├── swin_transformer-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   └── requirements.txt
+│   ├── csrc
+│   │   ├── setup.py
+│   │   ├── swin_window_process.cpp
+│   │   ├── swin_window_process_kernel.cu
+│   │   ├── unit_test.py
+│   │   └── window_process.py
+│   ├── extern
+│   └── README.md
+├── t5_small-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── tacotron2-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── transformer-pytorch
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_common.py
+│   │   └── requirements.txt
+│   ├── csrc
+│   │   ├── make_batches.cpp
+│   │   └── setup.py
+│   ├── extern
+│   └── README.md
+├── transformer_xl-pytorch
+│   ├── config
+│   │   ├── config_A100x1x1.py
+│   │   ├── config_A100x1x8.py
+│   │   ├── config_A100x2x8.py
+│   │   ├── config_common.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+├── vit-pytorch
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   └── config_common.py
+│   ├── extern
+│   └── README.md
+├── wav2vec2-pytorch
+│   ├── config
+│   │   ├── config_A100x1x8.py
+│   │   └── requirements.txt
+│   ├── extern
+│   └── README.md
+└── WaveGlow-pytorch
+    ├── config
+    │   └── config_A100x1x8.py
+    ├── extern
+    └── README.md
+
+171 directories, 383 files

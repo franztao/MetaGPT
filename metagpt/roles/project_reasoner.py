@@ -36,7 +36,7 @@ Output a json following the format:
 
 
 class ProjectReasoner(Role):
-    name: str = "AI芯片评测工程师"
+    name: str = "AI芯片评测项目"
     profile: str = "项目的第一位处理人（项目经理，产品经理，架构师）"
     auto_run: bool = True
     use_plan: bool = True
@@ -131,10 +131,10 @@ class ProjectReasoner(Role):
             self.working_memory.add(Message(content=code, role="assistant", cause_by=cause_by))
 
             ### execute code ###
-            logger.info(f"code :{tool_info}")
+            logger.info(f"code :{json.dumps(code,indent=4)}")
             result, success = await self.execute_code.run(code)
-            logger.info(f"success :{success}")
-            logger.info(f"result :{result}")
+            logger.info(f"success :{json.dumps(success,indent=4)}")
+            logger.info(f"result :{json.dumps(result,indent=4)}")
 
             self.working_memory.add(Message(content=result, role="user", cause_by=ExecuteNbCode))
 
@@ -189,10 +189,10 @@ class ProjectReasoner(Role):
             return
         logger.info(f"code :{code}")
         result, success = await self.execute_code.run(code)
-        logger.info(f"success :{success}")
-        logger.info(f"result :{result}")
+        logger.info(f"success :{json.dumps(success,indent=4)}")
+        logger.info(f"result :{json.dumps(result,indent=4)}")
         if success:
-            print(result)
+            # print(result)
             data_info = DATA_INFO.format(info=result)
             self.working_memory.add(Message(content=data_info, role="user", cause_by=CheckData))
 

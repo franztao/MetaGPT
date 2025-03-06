@@ -36,7 +36,7 @@ Output a json following the format:
 
 
 class ConfigDeploy(Role):
-    name: str = "AI芯片评测工程师"
+    name: str = "AI芯片评测项目"
     profile: str = "项目的第二位处理人，负责在机器上部署配置"
     auto_run: bool = True
     use_plan: bool = True

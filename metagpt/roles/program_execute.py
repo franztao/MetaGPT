@@ -36,7 +36,7 @@ Output a json following the format:
 
 
 class ProgramExecute(Role):
-    name: str = "AI芯片评测工程师"
+    name: str = "AI芯片评测项目"
     profile: str = "项目的第三位处理人，负责项目在机器上运行程序"
     auto_run: bool = True
     use_plan: bool = True

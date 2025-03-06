@@ -86,9 +86,9 @@ client = OpenAI(
 	api_key="VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6",
 	# default_headers={"X-Package":"1910"},
 )
-
+# model="DeepSeek-R1",
 response = client.chat.completions.create(
-	model="DeepSeek-R1",
+	model="DeepSeek-V3",
 	# stream=True,
 	# max_tokens=1024,
 	# temperature=0.6,

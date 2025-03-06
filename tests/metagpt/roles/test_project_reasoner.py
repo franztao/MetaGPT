@@ -43,8 +43,8 @@ prompt = """
 
 # import jionlp as jio
 task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
-role = r'您是项目的第四位处理人（），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己不清楚和疑问,通过shell工具查看当前环境信息。如果通过shell工具还有不清楚的就提出问题来'
-requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用工具一定不要有删除卸载等高危操作'
+role = r'您是项目的第四位处理人（），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如接下来的负责人需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己不清楚和疑问,通过工具查看当前环境信息。如果通过工具还有不清楚的就提出问题来。最后列出接下来的负责人需要做哪些的清单，自己不要调用工具去做。'
+requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用的工具一定在提供的工具列表范围内，不要捏造和越权调用其它未指定的工具。调用工具一定不要有删除卸载等高危操作。调用工具出现权限不够的情况就不要再去解决，在最后总结出有这个问题存在就行。'
 goal = f'{task_description}。{role}。{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
@@ -163,6 +163,17 @@ async def f1():
         ls = f.readlines()
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
 
+
+    p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\input3.txt'
+    if os.path.exists(p2):
+        pass
+    else:
+        p2 = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input3.txt'
+    with open(p2, "r", encoding="utf-8") as f:
+        ls = f.readlines()
+    content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
+
+
     content = await get_content(content)
 
     pt = prompt.format(goal=goal, memory_short=memory_short, memory_long=content, output_demand=output_demand)
@@ -181,7 +192,7 @@ async def test_interpreter_react_mode():
     print(content)
     requirement = content
 
-    di = ProjectReasoner(react_mode="plan_and_act", tools=["shell_tool"])
+    di = ProjectReasoner(react_mode="plan_and_act", tools=["shell_tool"], max_react_loop=2)
     rsp = await di.run(requirement)
     logger.info(rsp)
     assert len(rsp.content) > 0
