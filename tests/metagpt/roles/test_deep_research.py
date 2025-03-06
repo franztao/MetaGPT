@@ -62,7 +62,20 @@ output_demand = '''
 async def test_deep_research():
     # mocker.patch("metagpt.actions.di.execute_nb_code.ExecuteNbCode.run", return_value=("a successful run", True))
 
-    requirement=""
+
+    content = ""
+    p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\step4_input_0306.txt'
+    if os.path.exists(p2):
+        pass
+    else:
+        p2 = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/step4_input_0306.txt'
+    with open(p2, "r", encoding="utf-8") as f:
+        ls = f.readlines()
+    memory_short = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
+
+    requirement = prompt.format(goal=goal, memory_short=memory_short, memory_long="", output_demand=output_demand)
+
+
     di = DeepResearch(react_mode="plan_and_act", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(rsp)
@@ -70,6 +83,6 @@ async def test_deep_research():
 
 
 # C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
-# python /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
+#  /home/hengtao/miniconda3/envs/metagpt39/bin/python  /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_deep_research.py.py
 if __name__ == '__main__':
     asyncio.run(test_deep_research())

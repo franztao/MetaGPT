@@ -1,0 +1,1 @@
+运行程序后生成的日志结果地址：/home/hengtao/debug/step3/FlagPerf/training/result/run20250218153849
