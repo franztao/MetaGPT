@@ -13,7 +13,7 @@
 #  api_key: "sk-2dcfb5f8f3f24c04ad1bc13843c7e491"
 llm:
   api_type: "openai"  # or azure / ollama / groq etc.
-  model: "DeepSeek-R1"  # or gpt-3.5-turbo DeepSeek-V3 R1
+  model: "DeepSeek-V3"  # or gpt-3.5-turbo DeepSeek-V3 R1  DeepSeek-R1
   base_url: "https://ai.gitee.com/v1"  # or forward url / other llm url
   api_key: "VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6"
 
