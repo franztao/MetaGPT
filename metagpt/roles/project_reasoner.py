@@ -51,7 +51,7 @@ class ProjectReasoner(Role):
     def set_plan_and_tool(self) -> "Interpreter":
         self._set_react_mode(react_mode=self.react_mode, max_react_loop=self.max_react_loop, auto_run=self.auto_run)
         self.use_plan = (
-            self.react_mode == "plan_and_act"
+                self.react_mode == "plan_and_act"
         )  # create a flag for convenience, overwrite any passed-in value
         if self.tools and not self.tool_recommender:
             self.tool_recommender = BM25ToolRecommender(tools=self.tools)
@@ -131,10 +131,10 @@ class ProjectReasoner(Role):
             self.working_memory.add(Message(content=code, role="assistant", cause_by=cause_by))
 
             ### execute code ###
-            logger.info(f"code :{json.dumps(code,indent=4)}")
+            logger.info(f"code :{json.dumps(code, ensure_ascii=False, indent=4)}")
             result, success = await self.execute_code.run(code)
-            logger.info(f"success :{json.dumps(success,indent=4)}")
-            logger.info(f"result :{json.dumps(result,indent=4)}")
+            logger.info(f"success :{json.dumps(success, ensure_ascii=False, indent=4)}")
+            logger.info(f"result :{json.dumps(result, ensure_ascii=False, indent=4)}")
 
             self.working_memory.add(Message(content=result, role="user", cause_by=ExecuteNbCode))
 
@@ -150,10 +150,10 @@ class ProjectReasoner(Role):
         return code, result, success
 
     async def _write_code(
-        self,
-        counter: int,
-        plan_status: str = "",
-        tool_info: str = "",
+            self,
+            counter: int,
+            plan_status: str = "",
+            tool_info: str = "",
     ):
         todo = self.rc.todo  # todo is WriteAnalysisCode
         logger.info(f"ready to {todo.name}")
@@ -173,14 +173,14 @@ class ProjectReasoner(Role):
 
     async def _check_data(self):
         if (
-            not self.use_plan
-            or not self.planner.plan.get_finished_tasks()
-            or self.planner.plan.current_task.task_type
-            not in [
-                TaskType.DATA_PREPROCESS.type_name,
-                TaskType.FEATURE_ENGINEERING.type_name,
-                TaskType.MODEL_TRAIN.type_name,
-            ]
+                not self.use_plan
+                or not self.planner.plan.get_finished_tasks()
+                or self.planner.plan.current_task.task_type
+                not in [
+            TaskType.DATA_PREPROCESS.type_name,
+            TaskType.FEATURE_ENGINEERING.type_name,
+            TaskType.MODEL_TRAIN.type_name,
+        ]
         ):
             return
         logger.info("Check updated data")
@@ -189,13 +189,12 @@ class ProjectReasoner(Role):
             return
         logger.info(f"code :{code}")
         result, success = await self.execute_code.run(code)
-        logger.info(f"success :{json.dumps(success,indent=4)}")
-        logger.info(f"result :{json.dumps(result,indent=4)}")
+        logger.info(f"success :{json.dumps(success, ensure_ascii=False, indent=4)}")
+        logger.info(f"result :{json.dumps(result, ensure_ascii=False, indent=4)}")
         if success:
             # print(result)
             data_info = DATA_INFO.format(info=result)
             self.working_memory.add(Message(content=data_info, role="user", cause_by=CheckData))
-
 
 # if __name__ == '__main__':
 #     f1()

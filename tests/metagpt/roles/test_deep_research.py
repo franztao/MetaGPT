@@ -45,9 +45,9 @@ prompt = """
 """
 
 # import jionlp as jio
-task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和okens per gpu per second(tgs)“。'
+task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和tokens per gpu per second(tgs)“。'
 role = r'您项目的第四位处理人，负责项目在最后结果的汇总和登记，首先你会阅读上一位处理人输出的运行结果报告（```短期记忆```）和本地程序运行生成的结果（```长期记忆```），然后进行理解和分析、然后通过工具将结果汇总放到归档文件下'
-requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",数据和模型地址在"/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"，归档文件地址在"/home/hengtao/debug/MetaGPT/result",调用工具一定不要有删除卸载等高危操作'
+requirements = r'当前运行环境是linux，当前FlagPerf的git库地址在"/home/hengtao/debug/step3/FlagPerf",数据和模型地址在"/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"，归档文件地址在"/home/hengtao/debug/MetaGPT/result",调用工具一定不要有删除卸载等高危操作'
 goal = f'{task_description}。{role}。{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
@@ -83,6 +83,6 @@ async def test_deep_research():
 
 
 # C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
-#  /home/hengtao/miniconda3/envs/metagpt39/bin/python  /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_deep_research.py.py
+#  /home/hengtao/miniconda3/envs/metagpt39/bin/python  /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_deep_research.py
 if __name__ == '__main__':
     asyncio.run(test_deep_research())
