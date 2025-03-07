@@ -1,8 +1,10 @@
+
 # 启动测试
 ```
 python3 ./run_benchmarks/run.py
 sudo python3 ./run_benchmarks/run.py
 ```
+
 # 查看日志
 ```
 cd result/run2023XXXX/运行模型/
