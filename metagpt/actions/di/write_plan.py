@@ -52,7 +52,12 @@ class WritePlan(Action):
 
 
 def update_plan_from_rsp(rsp: str, current_plan: Plan):
-    rsp = json.loads(rsp)
+    try:
+        rsp = json.loads(rsp)
+    except Exception as e:
+        logger.error(e)
+        logger.error(f'rsp:{rsp}')
+        rsp=[]
     tasks = [Task(**task_config) for task_config in rsp]
 
     if len(tasks) == 1 or tasks[0].dependent_task_ids:
