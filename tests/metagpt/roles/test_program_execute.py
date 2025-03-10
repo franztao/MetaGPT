@@ -52,7 +52,7 @@ goal = f'{task_description}。{role}。{requirements}'
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
 memory_short = ''
 memory_long = ''
-output_demand = '''
+output_demand = '''尽量完成项目任务，不能逃避和客套话回复（如"要不咱们换个话题？"）。
 '''
 
 
