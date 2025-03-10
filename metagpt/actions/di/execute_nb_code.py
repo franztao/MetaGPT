@@ -34,7 +34,7 @@ class ExecuteNbCode(Action):
     nb_client: NotebookClient
     console: Console
     interaction: str
-    timeout: int = 600
+    timeout: int = 6000
 
     def __init__(
         self,

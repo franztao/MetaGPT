@@ -14,6 +14,7 @@ STRUCTUAL_PROMPT = """
 - Take on Current Task if it is in Plan Status, otherwise, tackle User Requirement directly.
 - Ensure the output new code is executable in the same Jupyter notebook as the previous executed code.
 - Always prioritize using pre-defined tools for the same functionality.
+- 生成的代码中不要包含time.sleep等阻塞函数。
 
 # Output
 While some concise thoughts are helpful, code is absolutely required. Always output one and only one code block in your response. Output code in the following format:

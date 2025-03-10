@@ -194,7 +194,7 @@ async def test_interpreter_react_mode():
     print(content)
     requirement = content
 
-    di = ProjectReasoner(react_mode="plan_and_act", tools=["shell_tool"], max_react_loop=3)
+    di = ProjectReasoner(react_mode="react", tools=["shell_tool"], max_react_loop=3)
     rsp = await di.run(requirement)
     logger.info(rsp)
     assert len(rsp.content) > 0

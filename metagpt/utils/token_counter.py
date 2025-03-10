@@ -446,6 +446,13 @@ def count_input_tokens(messages, model="gpt-3.5-turbo-0125"):
         """
         tokens_per_message = 0  # ignore conversation message template prefix
         tokens_per_name = 0
+    elif "DeepSeek-R1" == model:
+        """
+        For self-hosted open_llm api, they include lots of different models. The message tokens calculation is
+        inaccurate. It's a reference result.
+        """
+        tokens_per_message = 0  # ignore conversation message template prefix
+        tokens_per_name = 0
     else:
         raise NotImplementedError(
             f"num_tokens_from_messages() is not implemented for model {model}. "

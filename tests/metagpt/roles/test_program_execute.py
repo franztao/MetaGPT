@@ -65,7 +65,7 @@ async def test_program_execute():
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/FlagPerf/README.md'
+        p2 = r'/home/hengtao/debug/FlagPerf/step3/README.md'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     memory_long = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
@@ -73,7 +73,7 @@ async def test_program_execute():
 
     requirement = prompt.format(goal=goal, memory_short=memory_short, memory_long=memory_long, output_demand=output_demand)
 
-    di = ProgramExecute(react_mode="plan_and_act", tools=["shell_tool"])
+    di = ProgramExecute(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(rsp)
     assert len(rsp.content) > 0
