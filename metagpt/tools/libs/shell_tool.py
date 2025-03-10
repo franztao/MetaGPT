@@ -66,6 +66,7 @@ def shell_tool(tool_input: Union[str, dict[str, Any]],
     # Ignore all warnings
     warnings.filterwarnings("ignore")
 
+
     set_verbose(False)
     set_debug(False)
     try:
