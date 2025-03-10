@@ -90,7 +90,7 @@ client = OpenAI(
 response = client.chat.completions.create(
 	model="DeepSeek-V3",
 	# stream=True,
-	# max_tokens=1024,
+	max_tokens=8196,
 	# temperature=0.6,
 	# top_p=0.8,
 	# extra_body={
@@ -104,7 +104,7 @@ response = client.chat.completions.create(
 		# },
 		{
 			"role": "user",
-			"content": pt
+			"content": ''.join([pt]*2)
 		}
 	],
 )

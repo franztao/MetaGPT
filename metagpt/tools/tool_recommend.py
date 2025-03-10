@@ -131,7 +131,9 @@ class ToolRecommender(BaseModel):
             available_tools=available_tools,
             topk=topk,
         )
-        rsp = await LLM().aask(prompt)
+        # TODO 打桩
+        # rsp = await LLM().aask(prompt)
+        rsp="\n\n```json\n[\"shell_tool\"]\n```"
         rsp = CodeParser.parse_code(block=None, text=rsp)
         ranked_tools = json.loads(rsp)
 

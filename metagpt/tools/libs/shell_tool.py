@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+import warnings
 from typing import (
     Any,
     Optional,
@@ -60,7 +61,13 @@ def shell_tool(tool_input: Union[str, dict[str, Any]],
     # pip install  langchain-community  -i https://pypi.doubanio.com/simple
     # pip install  langchain-experimental -i https://pypi.doubanio.com/simple
     st = ShellTool()
+    from langchain_core.globals import set_verbose, set_debug
 
+    # Ignore all warnings
+    warnings.filterwarnings("ignore")
+
+    set_verbose(False)
+    set_debug(False)
     try:
         result = st.run(tool_input, verbose, start_color, color, callbacks, tags=tags, metadata=metadata,
                         run_name=run_name,
