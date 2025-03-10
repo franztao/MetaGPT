@@ -63,6 +63,7 @@ def shell_tool(tool_input: Union[str, dict[str, Any]],
     st = ShellTool()
     from langchain_core.globals import set_verbose, set_debug
 
+
     # Ignore all warnings
     warnings.filterwarnings("ignore")
 
