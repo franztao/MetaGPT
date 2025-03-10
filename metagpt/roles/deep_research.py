@@ -180,6 +180,7 @@ class DeepResearch(Role):
             TaskType.DATA_PREPROCESS.type_name,
             TaskType.FEATURE_ENGINEERING.type_name,
             TaskType.MODEL_TRAIN.type_name,
+            TaskType.MODEL_EVALUATE.type_name,
         ]
         ):
             return

@@ -69,7 +69,7 @@ def shell_tool(tool_input: Union[str, dict[str, Any]],
         # result="success"
     except Exception as e:
         logger.error(e)
-        result = ""
+        result = "call  error"
 
     logger.info(f"shell run is {result}")
 
