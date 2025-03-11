@@ -54,7 +54,7 @@ WEB_BROWSE_AND_SUMMARIZE_PROMPT = """### Requirements
 a comprehensive summary of the text.
 3. If the text is entirely unrelated to the research topic, please reply with a simple text "Not relevant."
 4. Include all relevant factual information, numbers, statistics, etc., if available.
-
+5. 不能逃避和客套话回复（如"要不咱们换个话题？"）。
 ### Reference Information
 {content}
 """
