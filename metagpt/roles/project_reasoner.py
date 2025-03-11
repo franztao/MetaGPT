@@ -76,9 +76,13 @@ class ProjectReasoner(Role):
 
         prompt = REACT_THINK_PROMPT.format(user_requirement=user_requirement, context=context)
         rsp = await self.llm.aask(prompt)
-        rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
-        self.working_memory.add(Message(content=rsp_dict["thoughts"], role="assistant"))
-        need_action = rsp_dict["state"]
+        try:
+            rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
+            self.working_memory.add(Message(content=rsp_dict["thoughts"], role="assistant"))
+            need_action = rsp_dict["state"]
+        except Exception as e:
+            logger.error(e)
+            need_action=False
         self._set_state(0) if need_action else self._set_state(-1)
 
         return need_action

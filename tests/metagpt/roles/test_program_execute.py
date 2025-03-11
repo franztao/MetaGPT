@@ -40,7 +40,7 @@ goal = f'{task_description}。{role}。{requirements}'
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
 memory_short = ''
 memory_long = ''
-output_demand = '''尽量完成项目任务，不能逃避和客套话回复（如"要不咱们换个话题？"）。
+output_demand = '''尽量完成项目任务，绝对不能逃避和客套话回复（如"要不咱们换个话题？"）。
 '''
 
 
@@ -72,6 +72,7 @@ async def test_program_execute():
     di = ProgramExecute(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(f"final result:{rsp}")
+    logger.info(f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     assert len(rsp.content) > 0
 
 

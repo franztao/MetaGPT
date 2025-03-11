@@ -197,6 +197,7 @@ async def test_interpreter_react_mode():
     di = ProjectReasoner(react_mode="react", tools=["shell_tool"], max_react_loop=3)
     rsp = await di.run(requirement)
     logger.info(f"final result:{rsp}")
+    logger.info(f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     assert len(rsp.content) > 0
 
 
