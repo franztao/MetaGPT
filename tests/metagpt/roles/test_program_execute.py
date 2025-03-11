@@ -65,7 +65,7 @@ async def test_program_execute():
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     memory_long = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
-    l=max(1,len(memory_long) - 15000)
+    l=max(1,len(memory_long) - 20000)
     requirement = prompt.format(goal=goal, memory_short=memory_short,
                                 memory_long=memory_long[0:l], output_demand=output_demand)
 
