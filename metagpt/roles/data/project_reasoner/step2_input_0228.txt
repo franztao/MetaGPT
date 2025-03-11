@@ -10,5 +10,5 @@ pipeline_parallel = 2
 '
 
 修改文件：training/run_benchmarks/config/test_conf.py，-'FLAGPERF_PATH = "/home/FlagPerf/training"'
-+'FLAGPERF_PATH = "/home/nova/th/FlagPerf/training"'。-'#"llama3_8B:megatron_core060:A100:1:8:1": "/data/llama3_8b_pretrain"',+'"llama3_8B:megatron_core060:A100:1:1:1": "/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"'。-'"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"',+'#"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"'
++'FLAGPERF_PATH = "/home/hengtao/debug/step3/FlagPerf/training"'。-'#"llama3_8B:megatron_core060:A100:1:8:1": "/data/llama3_8b_pretrain"',+'"llama3_8B:megatron_core060:A100:1:1:1": "/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"'。-'"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"',+'#"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"'
 
