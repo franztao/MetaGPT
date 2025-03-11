@@ -65,7 +65,7 @@ async def test_program_execute():
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/FlagPerf/step3/README.md'
+        p2 = r'/home/hengtao/debug/step3/FlagPerf/README.md'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     memory_long = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
