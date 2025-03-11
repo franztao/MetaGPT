@@ -44,11 +44,8 @@ output_demand = '''尽量完成项目任务，不能逃避和客套话回复（�
 '''
 
 
-
-
 async def test_program_execute():
     # mocker.patch("metagpt.actions.di.execute_nb_code.ExecuteNbCode.run", return_value=("a successful run", True))
-
 
     content = ""
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\metagpt\roles\data\project_reasoner\step3_input_0306.txt'
@@ -60,7 +57,6 @@ async def test_program_execute():
         ls = f.readlines()
     memory_short = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
 
-
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\README.md'
     if os.path.exists(p2):
         pass
@@ -70,8 +66,8 @@ async def test_program_execute():
         ls = f.readlines()
     memory_long = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
 
-
-    requirement = prompt.format(goal=goal, memory_short=memory_short, memory_long=memory_long, output_demand=output_demand)
+    requirement = prompt.format(goal=goal, memory_short=memory_short,
+                                memory_long=memory_long[0:len(memory_long) - 10000], output_demand=output_demand)
 
     di = ProgramExecute(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
