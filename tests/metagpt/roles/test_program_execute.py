@@ -75,7 +75,7 @@ async def test_program_execute():
 
     di = ProgramExecute(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
-    logger.info(rsp)
+    logger.info(f"final result:{rsp}")
     assert len(rsp.content) > 0
 
 

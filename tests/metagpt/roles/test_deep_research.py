@@ -66,7 +66,7 @@ async def test_deep_research():
 
     di = DeepResearch(react_mode="react", tools=["shell_tool"])
     rsp = await di.run(requirement)
-    logger.info(rsp)
+    logger.info(f"final result:{rsp}")
     assert len(rsp.content) > 0
 
 
