@@ -64,7 +64,7 @@ async def test_deep_research():
     requirement = prompt.format(goal=goal, memory_short=memory_short, memory_long="", output_demand=output_demand)
 
 
-    di = DeepResearch(react_mode="react", tools=["shell_tool"])
+    di = DeepResearch(react_mode="plan_and_act", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(f"final result:{rsp}")
     logger.info(f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")

@@ -69,7 +69,7 @@ async def test_program_execute():
     requirement = prompt.format(goal=goal, memory_short=memory_short,
                                 memory_long=memory_long[0:l], output_demand=output_demand)
 
-    di = ProgramExecute(react_mode="react", tools=["shell_tool"])
+    di = ProgramExecute(react_mode="plan_and_act", tools=["shell_tool"])
     rsp = await di.run(requirement)
     logger.info(f"final result:{rsp}")
     logger.info(f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")

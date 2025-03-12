@@ -53,7 +53,7 @@ async def test_config_deploy():
 
     requirement = prompt.format(goal=goal, memory_short=memory_short, memory_long="", output_demand=output_demand)
 
-    di = ConfigDeploy(react_mode="react", tools=["shell_tool"], max_react_loop=2)
+    di = ConfigDeploy(react_mode="plan_and_act", tools=["shell_tool"], max_react_loop=2)
     rsp = await di.run(requirement)
     logger.info(f"final result:{rsp}")
     logger.info(f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
