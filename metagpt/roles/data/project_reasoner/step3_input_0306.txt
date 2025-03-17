@@ -1,5 +1,5 @@
 
 # 启动测试
 ```
-python3 /home/hengtao/debug/step2/FlagPerf/training/run_benchmarks/run.py &
+python3 /home/htao/debug/step2/FlagPerf/training/run_benchmarks/run.py &
 ```
