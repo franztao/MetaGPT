@@ -43,9 +43,9 @@ prompt = """
 """
 
 # import jionlp as jio
-task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机1卡上适配Nvidia A100的GPU显卡，最后得到loss数值和tokens per gpu per second(tgs)“。'
+task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机8卡上适配沐曦 C500的GPU显卡，最后得到loss数值和tokens per gpu per second(tgs)“。'
 role = r'您是项目的第一位处理人（项目经理，产品经理，架构师），首先你会阅读大量资料如readme等（```长期记忆```），然后进行理解、分析和推理，确定项目接下来的负责人（配置部署工程师）还需要做哪些,比如接下来的负责人需要做哪些操作准备，下载哪些数据、代码和模型checkpoint等，需要修改哪些代码，和一些必要的前置条件，如果自己有不清楚和疑问,通过工具通过ls,cat等linux查询命令去查看当前环境信息。如果通过工具还有不清楚的就提出问题来。最后列出接下来的负责人需要做哪些的清单，自己不要调用工具去改变当前运行环境。'
-requirements = r'当前运行环境是linux正在运行的容器中，当前FlagPerf的git库地址在"/home/hengtao/debug/FlagPerf",调用的工具一定在提供的工具列表范围内，不要捏造和越权调用其它未指定的工具。调用工具一定不要有删除卸载等（rm,delete）高危操作。调用工具出现权限不够的情况就不要再去解决，在最后总结出有这个问题存在就行。'
+requirements = r'当前运行环境是linux正在运行的容器中，当前FlagPerf的git库地址在"/home/htao/debug/FlagPerf",调用的工具一定在提供的工具列表范围内，不要捏造和越权调用其它未指定的工具。调用工具一定不要有删除卸载等（rm,delete）高危操作。调用工具出现权限不够的情况就不要再去解决，在最后总结出有这个问题存在就行。'
 goal = f'{task_description}。{role}。{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
@@ -128,21 +128,21 @@ async def f1():
     if os.path.exists(src):
         pass
     else:
-        src = r'/home/hengtao/debug/FlagPerf/training/nvidia/llama3_8B-megatron'
+        src = r'/home/htao/debug/FlagPerf/training/nvidia/llama3_8B-megatron'
     content = rec_dir(src, content)
 
     src = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\training\benchmarks\llama3_8B\megatron'
     if os.path.exists(src):
         pass
     else:
-        src = r'/home/hengtao/debug/FlagPerf/training/benchmarks/llama3_8B/megatron'
+        src = r'/home/htao/debug/FlagPerf/training/benchmarks/llama3_8B/megatron'
     content = rec_dir(src, content)
 
     p2 = r'C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\README.md'
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/FlagPerf/README.md'
+        p2 = r'/home/htao/debug/FlagPerf/README.md'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
@@ -151,7 +151,7 @@ async def f1():
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input1.txt'
+        p2 = r'/home/htao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input1.txt'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
@@ -160,7 +160,7 @@ async def f1():
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input2.txt'
+        p2 = r'/home/htao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input2.txt'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
@@ -170,7 +170,7 @@ async def f1():
     if os.path.exists(p2):
         pass
     else:
-        p2 = r'/home/hengtao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input3.txt'
+        p2 = r'/home/htao/debug/MetaGPT/metagpt/roles/data/project_reasoner/input3.txt'
     with open(p2, "r", encoding="utf-8") as f:
         ls = f.readlines()
     content = content + "\n" + "---" * 1 + "\n文件地址" + p2 + "\n文件中内容:\n" + ''.join(ls) + "\n" + "---" * 1
@@ -202,6 +202,6 @@ async def test_interpreter_react_mode():
 
 
 # C:\Users\m01216.METAX-TECH\.conda\envs\metagpt\python.exe  C:\Users\m01216.METAX-TECH\Desktop\code\MetaGPT\tests\metagpt\roles\test_project_reasoner.py
-# /home/hengtao/miniconda3/envs/metagpt39/bin/python /home/hengtao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
+# /home/htao/miniconda3/envs/metagpt39/bin/python /home/htao/debug/MetaGPT/tests/metagpt/roles/test_project_reasoner.py
 if __name__ == '__main__':
     asyncio.run(test_interpreter_react_mode())
