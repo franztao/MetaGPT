@@ -1,14 +1,22 @@
-修改文件: training/run_benchmarks/config/cluster_conf.py，-'HOSTS = ["10.1.2.2", "10.1.2.3", "10.1.2.4"]',+'HOSTS = ["172.23.4.134"]'
+修改文件: training/run_benchmarks/config/cluster_conf.py，-'HOSTS = ["10.1.2.2", "10.1.2.3", "10.1.2.4"]',+'HOSTS = ["10.0.180.12"]'
 
-新增文件：training/nvidia/llama3_8B-megatron/config/config_A100x1x1.py,'tokenizer_path = "llama-3-8b"
-localbs = 1
-train_steps = 300
-theoryflops = 312000000000000.0
-megatron_path = "/workspace/Megatron-LM" # need to be aligned with DockerFile. In NGCtorch, it's /workspace/ + Megatron-LM
-tensor_parallel = 1
-pipeline_parallel = 2
-'
 
-修改文件：training/run_benchmarks/config/test_conf.py，-'FLAGPERF_PATH = "/home/FlagPerf/training"'
-+'FLAGPERF_PATH = "/home/hengtao/debug/step2/FlagPerf/training"'。-'#"llama3_8B:megatron_core060:A100:1:8:1": "/data/llama3_8b_pretrain"',+'"llama3_8B:megatron_core060:A100:1:1:1": "/home/hengtao/code/task/llama3_8B/megatron_llama3/data_dir"'。-'"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"',+'#"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"'
+修改文件：training/run_benchmarks/config/test_conf.py，-'VENDOR = "nvidia"'
++'VENDOR = "metax"'。-'ACCE_CONTAINER_OPT = " --gpus all"',+'ACCE_CONTAINER_OPT = " --device=/dev/infiniband --device=/dev/dri --device=/dev/mxcd --group-add video"'。-'FLAGPERF_PATH = "/home/FlagPerf/training"',+'FLAGPERF_PATH = "/home/htao/debug/step3/FlagPerf/training"'。-'"llama3_8B:megatron:TG-V200:1:16:1": "/datasets",',+'#"llama3_8B:megatron:TG-V200:1:16:1": "/datasets"'。-'#"llama3_8B:megatron_core060:C500:1:8:1": "/data/llama3_8b_pretrain"',+'"llama3_8B:megatron_core060:C500:1:8:1": "/home/htao/debug/step3/FlagPerf/data/llama3_8b"'
 
+
+修改文件: training/metax/docker_image/megatron_core060/Dockerfile，-'ENV MCBLAS_CUSTOMIZED_CONFIG_PATH=/workspace/Megatron-LM_metax/mcblas_customized_config.yaml',+'ENV MCBLAS_CUSTOMIZED_CONFIG_PATH=/workspace/Megatron-LM/mcblas_customized_config.yaml'
+
+修改文件: training/metax/llama3_8B-megatron/config/config_C500x1x8.py，-'tokenizer_path = "llama3_8b_hf"',+'tokenizer_path = "llama-3-8b"'。-'megatron_path = "/workspace/Megatron-LM_metax"',+'megatron_path = "/workspace/Megatron-LM"'
+
+文件替换: training/metax/llama3_8B-megatron/config/training_adapter.sh,保存内容：'VENDOR_ARGS=" \
+     --transformer-impl local  \
+     --use-distributed-optimizer \
+     --use-mcore-models \
+     --use-flash-attn \
+     --pipline-num-layers-list 16 16
+     --recompute-granularity full \
+     --recompute-method block \
+     --recompute-num-layers 1 \
+     --recompute-num-layers-list 10 10
+ "'

@@ -35,7 +35,7 @@ prompt = """
 # import jionlp as jio
 task_description = r'当前项目目标是”对wudao数据集和lama3-8B模型在1机8卡上适配沐曦 C500的GPU显卡，最后得到loss数值和tokens per gpu per second(tgs)“。'
 role = r'您项目的第四位处理人，负责项目在最后结果的汇总和登记，首先你会阅读上一位处理人输出的运行结果报告（```短期记忆```）和本地程序运行生成的结果（```长期记忆```），然后进行理解和分析、然后通过工具将结果汇总放到归档文件下'
-requirements = r'当前运行环境是linux正在运行的容器中，当前FlagPerf的git库地址在"/home/htao/debug/FlagPerf",数据和模型地址在"/home/htao/code/task/llama3_8B/megatron_llama3/data_dir"，归档文件地址在"/home/htao/debug/MetaGPT/result",调用工具一定不要有删除卸载等高危操作'
+requirements = r'当前运行环境是linux正在运行的容器中，当前FlagPerf的git库地址在"/home/htao/debug/FlagPerf",数据和模型地址在"/home/htao/debug/step2/FlagPerf/data/llama3_8B/megatron_llama3/data_dir"，归档文件地址在"/home/htao/debug/MetaGPT/result",调用工具一定不要有删除卸载等高危操作'
 goal = f'{task_description}。{role}。{requirements}'
 
 # 再通过shell工具查看当前环境是否具备运行调试等的条件
