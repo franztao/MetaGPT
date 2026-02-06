@@ -99,6 +99,7 @@ if __name__ == "__main__":
     config = EXPERIMENT_CONFIGS[args.dataset]
 
     models_config = ModelsConfig.default()
+    print(models_config)
     opt_llm_config = models_config.get(args.opt_model_name)
     if opt_llm_config is None:
         raise ValueError(

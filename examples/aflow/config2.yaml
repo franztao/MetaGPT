@@ -1,0 +1,13 @@
+models:
+ "DeepSeek-R1": # model: "gpt-4-turbo"  # or gpt-3.5-turbo
+   api_type: "openai"  # or azure / ollama / groq etc.
+   base_url: "https://ai.gitee.com/v1"
+   api_key: "VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6"
+   temperature: 0
+ "DeepSeek-V3":
+   api_type: "openai"  # or azure / ollama / groq etc.
+   base_url: "https://ai.gitee.com/v1"
+   api_key: "VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6"
+   temperature: 0
+CALC_USAGE: True 
+

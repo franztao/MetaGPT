@@ -2,9 +2,21 @@ import json
 
 
 def f1():
-    src="from metagpt.tools.libs.shell_tool import shell_tool\n\nprint(\"检查nvidia目录下的llama3-pytorch配置...\")\n# 验证配置目录是否存在\nprint(\"检查配置目录结构:\")\nshell_tool(\"ls -l /home/hengtao/debug/FlagPerf/training/nvidia/llama3_8B-pytorch/config\")\n\nprint(\"\\n对比已有模型配置(以bert-pytorch为例):\")\nshell_tool(\"ls -l /home/hengtao/debug/FlagPerf/training/nvidia/bert-pytorch/config\")\n\nprint(\"\\n需要人工处理事项:\")\nprint(\"1. 若nvidia/llama3_8B-pytorch目录不存在，需从其他模型复制模板:\")\nprint(\"   cp -r nvidia/bert-pytorch nvidia/llama3_8B-pytorch\")\nprint(\"2. 修改config_A100x1x1.py中的关键参数:\")\nprint(\"   - train_batch_size (根据单卡显存调整)\")\nprint(\"   - learning_rate\")\nprint(\"   - max_steps (测试时建议设为较小值)\")\nprint(\"3. 检查Dockerfile中的基础镜像是否包含pytorch 2.0+\")\nprint(\"4. 确认run_pretraining.py中的模型初始化逻辑适配llama3-8B架构\")\n"
-    print(src)
-    # print(json.dumps(src,ensure_ascii=False))
+    src="""
+*A100单机8卡 消融实验*
+| 配置            | precision | parallel  | fix_hp | token/p/s | 是否精度对齐 | mem   | MFU   |
+| ------------- | --------- | --------- | ------ | --------- | ------ | ----- | ----- |
+| A100单机8卡（1x8） | bf16      | PP4DP2TP1 | /      | 3306.5    | /      | 59/80 | 50.0% |
+| A100单机8卡（1x8） | bf16      | PP1DP8TP1 | /      | /         | /      | OOM   | /     |
+| A100单机8卡（1x8） | bf16      | PP2DP2TP2 | /      | 3409.2    | /      | 51/80 | 52.4% |
+| A100单机8卡（1x8） | bf16      | PP2DP1TP4 | /      | 3006.1    | /      | 35/80 | 46.2% |
+| A100单机8卡（1x8） | bf16      | PP8DP1TP1 | /      | 2690.3    | /      | 55/80 | 41.4% |
+| A100单机8卡（1x8） | bf16      | PP1DP1TP8 | /      | 2451.2    | /      | 30/80 | 37.7% |
+| A100单机8卡（1x8） | bf16      | PP4DP1TP2 | /      | 3042.7    | /      | 45/80 | 46.8% |
+对以上表格用生成折线图来描述
+"""
+    # print(src)
+    print(json.dumps(src,ensure_ascii=False))
 
 if __name__ == '__main__':
     f1()

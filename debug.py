@@ -80,36 +80,96 @@ C:\Users\m01216.METAX-TECH\Desktop\code\FlagPerf\docs\base\base-case-doc.md
 ```
 # 输出
 """
+# base_url="https://ai.gitee.com/v1",
+	# api_key="XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6",
+# model="DeepSeek-R1",
+# client = OpenAI(
+# 	base_url="https://ai.gitee.com/v1",
+# 	api_key="XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6",
+# 	# base_url="https://api.deepseek.com",
+#     # api_key="sk-ebcb53f7e81a4ee88e1e140a41522f19"
+# 	# default_headers={"X-Package":"1910"},
+# )
+# # model="DeepSeek-R1",
+# response = client.chat.completions.create(
+# 	model="DeepSeek-R1",
+# 	# model="deepseek-chat",
+# 	# stream=True,
+# 	# max_tokens=8196,
+# 	# temperature=0.6,
+# 	# top_p=0.8,
+# 	# extra_body={
+# 	# 	"top_k": 20,
+# 	# },
+# 	# frequency_penalty=1.1,
+# 	messages=[
+# 		# {
+# 		# 	"role": "system",
+# 		# 	"content": "You are a helpful and harmless assistant. You should think step-by-step."
+# 		# },
+# 		{
+# 			"role": "user",
+# 			"content": ''.join([pt]*2)
+# 		}
+# 	],
+# )
+#
 
+from openai import OpenAI
 client = OpenAI(
 	base_url="https://ai.gitee.com/v1",
-	api_key="VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6",
-	# default_headers={"X-Package":"1910"},
-)
-# model="DeepSeek-R1",
-response = client.chat.completions.create(
-	model="DeepSeek-V3",
-	# stream=True,
-	max_tokens=8196,
-	# temperature=0.6,
-	# top_p=0.8,
-	# extra_body={
-	# 	"top_k": 20,
-	# },
-	# frequency_penalty=1.1,
-	messages=[
-		# {
-		# 	"role": "system",
-		# 	"content": "You are a helpful and harmless assistant. You should think step-by-step."
-		# },
-		{
-			"role": "user",
-			"content": ''.join([pt]*2)
-		}
-	],
-)
+	api_key="XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6",)
 
-print(response)
+messages = [
+    {'role': 'system', 'content': 'you are an assistant-like content'},
+    {'role': 'user', 'content': 'Question'},
+    {'role': 'assistant',
+     'tool_calls': [
+         {'id': 'call_id',
+          'function': {
+            'name': 'get_function',
+            'arguments': '{"args":"args"}'
+          },
+          'type': 'function'}
+     ]},
+    {'tool_call_id': 'call_id', 'role': 'tool', 'content': "content"}
+]
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_function",
+            "description": "A function to get something.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "args": {"type": "string"}
+                },
+                "required": ["args"]
+            },
+        }
+    }
+]
+
+response = client.chat.completions.create(
+	model="QwQ-32B",
+	# model="Qwen/QwQ-32B",
+    # model="Qwen2.5-Coder-32B-Instruct",
+	# model="deepseek-chat",
+    messages=messages,
+    tools=tools,
+    # tool_choice="auto",
+    # response_format={"type": "json_object"}
+)
+#
+# # Handle and print the response or error
+# try:
+#     print(response)
+# except Exception as e:
+#     print(f"Error: {e}")
+
+print(response.to_dict())
 # from openai import OpenAI
 # client = OpenAI(api_key="sk-2dcfb5f8f3f24c04ad1bc13843c7e491", base_url="https://api.deepseek.com")
 #

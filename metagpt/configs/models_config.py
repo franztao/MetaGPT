@@ -82,9 +82,12 @@ class ModelsConfig(YamlModel):
         Returns:
             ModelsConfig: Default ModelsConfig object.
         """
+        print(METAGPT_ROOT)
+        print(CONFIG_ROOT)
         default_config_paths: List[Path] = [
             METAGPT_ROOT / "config/config2.yaml",
             CONFIG_ROOT / "config2.yaml",
+            METAGPT_ROOT / "examples/aflow/config2.yaml",
         ]
 
         dicts = [ModelsConfig.read_yaml(path) for path in default_config_paths]
